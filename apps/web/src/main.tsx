@@ -19,7 +19,15 @@ declare module '@tanstack/react-router' {
 
 const creds = new CredentialManager({ service: `https://${SERVER_URL}/api/` });
 const rpc = new XRPC({ handler: creds });
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      structuralSharing: false,
+      retry: false,
+    }
+  }
+});
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

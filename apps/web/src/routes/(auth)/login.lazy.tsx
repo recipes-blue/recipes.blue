@@ -17,7 +17,7 @@ export const Route = createLazyFileRoute('/(auth)/login')({
 function RouteComponent() {
   const [handle, setHandle] = useState('');
 
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending, error } = useMutation({
     mutationKey: ['login'],
     mutationFn: async () => {
       const res = await fetch(`https://${SERVER_URL}/oauth/login`, {
@@ -63,6 +63,7 @@ function RouteComponent() {
             <div className="flex flex-col gap-2">
               <Label htmlFor="handle">Handle</Label>
               <Input
+                className={`${error ? 'border-destructive text-destructive' : ''}`}
                 type="text"
                 id="handle"
                 name="handle"
@@ -71,6 +72,7 @@ function RouteComponent() {
                 value={handle}
                 onChange={e => setHandle(e.currentTarget.value)}
               />
+              {error && <p className="text-sm font-medium text-destructive">{error.message}</p>}
             </div>
           </CardContent>
           <CardFooter>

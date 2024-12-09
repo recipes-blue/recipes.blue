@@ -9,10 +9,9 @@ import {
 } from '@/components/ui/breadcrumb'
 import { Separator } from '@/components/ui/separator'
 import { SidebarTrigger } from '@/components/ui/sidebar'
-import { useQuery } from '@tanstack/react-query'
-import { useXrpc } from '@/hooks/use-xrpc'
 import QueryPlaceholder from '@/components/query-placeholder'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { useRecipeQuery } from '@/queries/recipe'
 
 export const Route = createFileRoute('/(app)/recipes/$did/$rkey')({
   component: RouteComponent,
@@ -20,13 +19,7 @@ export const Route = createFileRoute('/(app)/recipes/$did/$rkey')({
 
 function RouteComponent() {
   const { did, rkey } = Route.useParams()
-  const { rpc } = useXrpc();
-
-  const query = useQuery({
-    queryKey: ['moe.hayden.cookware.getRecipe', { did, rkey }],
-    queryFn: () =>
-      rpc.get('moe.hayden.cookware.getRecipe', { params: { did, rkey } }),
-  });
+  const query = useRecipeQuery(did, rkey);
 
   return (
     <>
@@ -45,11 +38,11 @@ function RouteComponent() {
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink asChild><Link href={`/profiles/${did}`}>{query.data ? query.data.data.recipe.author.handle : did}</Link></BreadcrumbLink>
+                <BreadcrumbLink asChild><Link href={`/profiles/${did}`}>{query.data ? query.data.recipe.author.handle : did}</Link></BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage>{query.data ? query.data.data.recipe.title : rkey}</BreadcrumbPage>
+                <BreadcrumbPage>{query.data ? query.data.recipe.title : rkey}</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
@@ -58,8 +51,8 @@ function RouteComponent() {
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
         <QueryPlaceholder query={query}>
           <div className="max-w-6xl">
-            <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">{query.data?.data.recipe.title}</h1>
-            <p className="leading-7 [&:not(:first-child)]:mt-6">{query.data?.data.recipe.description}</p>
+            <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">{query.data?.recipe.title}</h1>
+            <p className="leading-7 [&:not(:first-child)]:mt-6">{query.data?.recipe.description}</p>
           </div>
 
           <div className="grid lg:grid-cols-3 gap-4">
@@ -69,7 +62,7 @@ function RouteComponent() {
               </CardHeader>
               <CardContent>
                 <ul>
-                  {query.data?.data.recipe.ingredients.map((ing, idx) => (
+                  {query.data?.recipe.ingredients.map((ing, idx) => (
                     <li key={idx}>{ing.name} ({ing.amount} {ing.unit})</li>
                   ))}
                 </ul>
@@ -82,7 +75,7 @@ function RouteComponent() {
               </CardHeader>
               <CardContent>
                 <ol>
-                  {query.data?.data.recipe.steps.map((ing, idx) => (
+                  {query.data?.recipe.steps.map((ing, idx) => (
                     <li key={idx}>{ing.text}</li>
                   ))}
                 </ol>
