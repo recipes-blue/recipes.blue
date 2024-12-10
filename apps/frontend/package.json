@@ -1,0 +1,45 @@
+{
+  "name": "@cookware/frontend",
+  "version": "1.0.0",
+  "main": "expo-router/entry",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.62.3",
+    "@tanstack/react-query-devtools": "^5.62.3",
+    "expo": "~52.0.17",
+    "expo-router": "^4.0.12",
+    "expo-status-bar": "~2.0.0",
+    "react": "18.3.1",
+    "react-compiler-runtime": "19.0.0-beta-37ed2a7-20241206",
+    "react-dom": "18.3.1",
+    "react-native": "0.76.3",
+    "react-native-react-query-devtools": "^1.3.10",
+    "react-native-web": "~0.19.13"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/runtime": "^7.26.0",
+    "@expo/metro-runtime": "~4.0.0",
+    "@expo/prebuild-config": "^8.0.23",
+    "@expo/webpack-config": "^19.0.1",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
+    "@react-native/typescript-config": "^0.76.5",
+    "@types/node": "^22.10.1",
+    "@types/react": "18.3.1",
+    "@types/react-dom": "18.3.1",
+    "babel-plugin-module-resolver": "^5.0.2",
+    "babel-plugin-react-compiler": "19.0.0-beta-37ed2a7-20241206",
+    "eslint": "^8.57.0",
+    "eslint-config-expo": "~8.0.1",
+    "react-refresh": "^0.16.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "private": true
+}

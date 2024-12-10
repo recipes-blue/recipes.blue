@@ -87,28 +87,6 @@ app.use(async (ctx, next) => {
   }
 });
 
-// TODO: Replace custom impl with this when issue is addressed:
-//   https://github.com/honojs/hono/issues/3736
-// app.use('/*', serveStatic({ root: env.PUBLIC_DIR, rewriteRequestPath: () => 'index.html' }));
-
-app.use('/*', async (ctx, next) => {
-  if (ctx.finalized) return next();
-
-  let path = getFilePathWithoutDefaultDocument({
-    filename: 'index.html',
-    root: env.PUBLIC_DIR,
-  })
-
-  if (path) {
-    path = `./${path}`;
-  } else {
-    return next();
-  }
-
-  const index = readFileSync(path).toString();
-  return ctx.html(index);
-});
-
 serve({
   fetch: app.fetch,
   hostname: env.HOST,

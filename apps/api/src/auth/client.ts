@@ -7,15 +7,20 @@ import { Context } from "hono";
 export const getClient = async (ctx: Context) => {
   let appUrl = 'https://cookware.fly.dev';
   if (env.ENV == 'development') {
-    appUrl = `https://${ctx.req.header('Host')}`;
+    appUrl = `http://127.0.0.1:8080`;
   }
 
   return new NodeOAuthClient({
     clientMetadata: {
-      client_id: `${appUrl}/oauth/client-metadata.json`,
+      client_id: env.ENV == 'development'
+        ? 'http://localhost'
+        : `${appUrl}/oauth/client-metadata.json`,
       client_name: 'Cookware',
       client_uri: appUrl,
-      redirect_uris: [`${appUrl}/oauth/callback`],
+      redirect_uris: [
+        `${appUrl}/oauth/callback`,
+        'http://127.0.0.1:8081/oauth/callback',
+      ],
       response_types: ['code'],
       application_type: 'web',
       grant_types: ['authorization_code', 'refresh_token'],

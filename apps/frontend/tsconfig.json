@@ -1,0 +1,12 @@
+{
+  "extends": "@react-native/typescript-config/tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "module": "esnext",
+    "types": ["node"],
+    "paths": {
+      "@app/*": ["./app/*"]
+    }
+  },
+  "exclude": ["build-web"]
+}
