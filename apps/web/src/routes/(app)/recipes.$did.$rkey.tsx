@@ -30,11 +30,11 @@ function RouteComponent() {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink asChild><Link href="/">Community</Link></BreadcrumbLink>
+                <BreadcrumbLink asChild><Link to="/">Community</Link></BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink asChild><Link href="/">Browse Recipes</Link></BreadcrumbLink>
+                <BreadcrumbLink asChild><Link to="/">Browse Recipes</Link></BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem className="hidden md:block">
