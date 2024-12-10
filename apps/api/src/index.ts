@@ -8,8 +8,9 @@ import { authApp } from "./auth/index.js";
 import { ZodError } from "zod";
 import { CookieStore, Session, sessionMiddleware } from "hono-sessions";
 import { CookwareSession } from "./util/api.js";
-import { serveStatic } from "@hono/node-server/serve-static";
 import * as Sentry from "@sentry/node"
+import { readFileSync } from "fs";
+import { getFilePathWithoutDefaultDocument } from "hono/utils/filepath";
 
 if (env.SENTRY_DSN) {
   Sentry.init({
@@ -86,7 +87,27 @@ app.use(async (ctx, next) => {
   }
 });
 
-app.use('/*', serveStatic({ root: env.PUBLIC_DIR, rewriteRequestPath: () => 'index.html' }));
+// TODO: Replace custom impl with this when issue is addressed:
+//   https://github.com/honojs/hono/issues/3736
+// app.use('/*', serveStatic({ root: env.PUBLIC_DIR, rewriteRequestPath: () => 'index.html' }));
+
+app.use('/*', async (ctx, next) => {
+  if (ctx.finalized) return next();
+
+  let path = getFilePathWithoutDefaultDocument({
+    filename: 'index.html',
+    root: env.PUBLIC_DIR,
+  })
+
+  if (path) {
+    path = `./${path}`;
+  } else {
+    return next();
+  }
+
+  const index = readFileSync(path).toString();
+  return ctx.html(index);
+});
 
 serve({
   fetch: app.fetch,
