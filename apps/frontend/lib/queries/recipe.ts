@@ -1,11 +1,17 @@
+import { useXrpc } from "@lib/xrpc";
 import { useQuery } from "@tanstack/react-query";
 
 export const useRecipesQuery = () => {
+  const { rpc } = useXrpc();
   return useQuery({
     queryKey: ['getRecipes'],
     queryFn: async () => {
-      const res = await fetch('http://localhost:8080/xrpc/moe.hayden.cookware.getRecipes?cursor=0');
-      return res.json();
+      const res = await rpc.get('moe.hayden.cookware.getRecipes', {
+        params: {
+          cursor: '',
+        },
+      });
+      return res.data;
     }
   });
 };

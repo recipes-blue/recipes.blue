@@ -1,6 +1,6 @@
 import { StyleSheet, ViewStyle } from 'react-native';
-import * as tokens from './tokens';
-import { ios, native, web } from './util/platform';
+import * as tokens from '@lib/chif/tokens';
+import { ios, native, web } from '@lib/chif/util/platform';
 
 export const atoms = {
   bg_transparent: {

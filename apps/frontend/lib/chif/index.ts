@@ -1,1 +1,1 @@
-export { atoms } from './atoms';
+export { atoms } from '@lib/chif/atoms';

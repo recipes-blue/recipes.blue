@@ -14,6 +14,7 @@ module.exports = function (api) {
         {
           alias: {
             '@app': './app',
+            '@lib': './lib',
           },
         }
       ]

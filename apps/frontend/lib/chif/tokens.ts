@@ -1,3 +1,14 @@
+import { isAndroid } from '@lib/platform/detection'
+
+export const TRACKING = isAndroid ? 0.1 : 0
+
+export const colors = {
+  light: {
+    destructive: 'hsl(0 84.2% 60.2%)',
+    destructive_foreground: 'hsl(0 0% 98%)',
+  },
+};
+
 export const space = {
   _2xs: 2,
   xs: 4,

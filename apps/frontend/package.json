@@ -10,11 +10,14 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@atcute/client": "^2.0.6",
+    "@cookware/lexicons": "workspace:^",
     "@tanstack/react-query": "^5.62.3",
     "@tanstack/react-query-devtools": "^5.62.3",
     "expo": "~52.0.17",
     "expo-router": "^4.0.12",
     "expo-status-bar": "~2.0.0",
+    "lucide-react": "^0.468.0",
     "react": "18.3.1",
     "react-compiler-runtime": "19.0.0-beta-37ed2a7-20241206",
     "react-dom": "18.3.1",
@@ -27,7 +30,6 @@
     "@babel/runtime": "^7.26.0",
     "@expo/metro-runtime": "~4.0.0",
     "@expo/prebuild-config": "^8.0.23",
-    "@expo/webpack-config": "^19.0.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
     "@react-native/typescript-config": "^0.76.5",
     "@types/node": "^22.10.1",
