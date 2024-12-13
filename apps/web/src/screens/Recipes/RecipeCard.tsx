@@ -1,4 +1,4 @@
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "@tanstack/react-router";
 import { Clock, CookingPot, ListIcon } from "lucide-react";
 
@@ -18,10 +18,11 @@ type RecipeCardProps = {
 
 export const RecipeCard = ({ rkey, author, ...recipe }: RecipeCardProps) => {
   return (
-    <Link to="/recipes/$author/$rkey" params={{ author, rkey }}>
-      <Card>
+    <Link to="/recipes/$author/$rkey" params={{ author, rkey }} className="w-full">
+      <Card className="w-full">
         <CardHeader>
           <CardTitle>{recipe.title}</CardTitle>
+          <CardDescription>By <Link href="#">@{author}</Link></CardDescription>
         </CardHeader>
         <CardContent>
           <p>{recipe.description}</p>
