@@ -62,7 +62,7 @@ export function NavUser() {
             className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
           >
             <Button asChild>
-              <Link href="/login" className="w-full">Log in</Link>
+              <Link to="/login" className="w-full">Log in</Link>
             </Button>
           </SidebarMenuButton>
         </SidebarMenuItem>

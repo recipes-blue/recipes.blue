@@ -9,17 +9,25 @@ import {
 } from '@/components/ui/breadcrumb'
 import { Separator } from '@/components/ui/separator'
 import { SidebarTrigger } from '@/components/ui/sidebar'
-import QueryPlaceholder from '@/components/query-placeholder'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { useRecipeQuery } from '@/queries/recipe'
+import { recipeQueryOptions } from '@/queries/recipe'
+import { queryClient } from '@/lib/react-query'
+import { useSuspenseQuery } from '@tanstack/react-query'
+import { rpc } from '@/hooks/use-xrpc'
 
 export const Route = createFileRoute('/(app)/recipes/$did/$rkey')({
+  loader: ({ params: { did, rkey }, }) => {
+    queryClient.ensureQueryData(recipeQueryOptions(rpc, did, rkey));
+  },
+
   component: RouteComponent,
 })
 
 function RouteComponent() {
   const { did, rkey } = Route.useParams()
-  const query = useRecipeQuery(did, rkey);
+  const {
+    data: { recipe },
+  } = useSuspenseQuery(recipeQueryOptions(rpc, did, rkey));
 
   return (
     <>
@@ -38,51 +46,49 @@ function RouteComponent() {
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink asChild><Link href={`/profiles/${did}`}>{query.data ? query.data.recipe.author.handle : did}</Link></BreadcrumbLink>
+                <BreadcrumbLink asChild><Link href={`/profiles/${did}`}>{recipe.author.handle}</Link></BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage>{query.data ? query.data.recipe.title : rkey}</BreadcrumbPage>
+                <BreadcrumbPage>{recipe.title}</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         </div>
       </header>
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <QueryPlaceholder query={query}>
-          <div className="max-w-6xl">
-            <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">{query.data?.recipe.title}</h1>
-            <p className="leading-7 [&:not(:first-child)]:mt-6">{query.data?.recipe.description}</p>
-          </div>
+        <div className="max-w-6xl">
+          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">{recipe.title}</h1>
+          <p className="leading-7 [&:not(:first-child)]:mt-6">{recipe.description}</p>
+        </div>
 
-          <div className="grid lg:grid-cols-3 gap-4">
-            <Card className="lg:col-start-3">
-              <CardHeader>
-                <CardTitle>Ingredients</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul>
-                  {query.data?.recipe.ingredients.map((ing, idx) => (
-                    <li key={idx}>{ing.name} ({ing.amount} {ing.unit})</li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
+        <div className="grid lg:grid-cols-3 gap-4">
+          <Card className="lg:col-start-3">
+            <CardHeader>
+              <CardTitle>Ingredients</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul>
+                {recipe.ingredients.map((ing, idx) => (
+                  <li key={idx}>{ing.name} ({ing.amount} {ing.unit})</li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
 
-            <Card className="lg:col-start-1 lg:row-start-1 lg:col-span-2">
-              <CardHeader>
-                <CardTitle>Steps</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ol>
-                  {query.data?.recipe.steps.map((ing, idx) => (
-                    <li key={idx}>{ing.text}</li>
-                  ))}
-                </ol>
-              </CardContent>
-            </Card>
-          </div>
-        </QueryPlaceholder>
+          <Card className="lg:col-start-1 lg:row-start-1 lg:col-span-2">
+            <CardHeader>
+              <CardTitle>Steps</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ol>
+                {recipe.steps.map((ing, idx) => (
+                  <li key={idx}>{ing.text}</li>
+                ))}
+              </ol>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </>
   )
