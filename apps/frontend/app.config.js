@@ -19,6 +19,7 @@ export default () => {
       web: {
         bundler: 'metro',
       },
+      plugins: ['expo-font'],
     },
   }
 }

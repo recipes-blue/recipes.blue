@@ -4,8 +4,9 @@ module.exports = function (api) {
     presets: [
       [
         'babel-preset-expo',
-        { lazyImports: true },
-      ]
+        { lazyImports: true, jsxImportSource: 'nativewind' },
+      ],
+      "nativewind/babel",
     ],
     plugins: [
       ['babel-plugin-react-compiler', { target: '18' }],
@@ -14,6 +15,7 @@ module.exports = function (api) {
         {
           alias: {
             '@app': './app',
+            '@components': './components',
             '@lib': './lib',
           },
         }
