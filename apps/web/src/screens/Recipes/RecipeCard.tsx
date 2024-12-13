@@ -18,7 +18,7 @@ type RecipeCardProps = {
 
 export const RecipeCard = ({ rkey, author, ...recipe }: RecipeCardProps) => {
   return (
-    <Link to="/recipes/$did/$rkey" params={{ did: author, rkey }}>
+    <Link to="/recipes/$author/$rkey" params={{ author, rkey }}>
       <Card>
         <CardHeader>
           <CardTitle>{recipe.title}</CardTitle>

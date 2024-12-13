@@ -15,19 +15,19 @@ import { queryClient } from '@/lib/react-query'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { rpc } from '@/hooks/use-xrpc'
 
-export const Route = createFileRoute('/(app)/recipes/$did/$rkey')({
-  loader: ({ params: { did, rkey }, }) => {
-    queryClient.ensureQueryData(recipeQueryOptions(rpc, did, rkey));
+export const Route = createFileRoute('/(app)/recipes/$author/$rkey')({
+  loader: ({ params: { author, rkey }, }) => {
+    queryClient.ensureQueryData(recipeQueryOptions(rpc, author, rkey));
   },
 
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const { did, rkey } = Route.useParams()
+  const { author, rkey } = Route.useParams()
   const {
     data: { recipe },
-  } = useSuspenseQuery(recipeQueryOptions(rpc, did, rkey));
+  } = useSuspenseQuery(recipeQueryOptions(rpc, author, rkey));
 
   return (
     <>
@@ -46,7 +46,7 @@ function RouteComponent() {
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink asChild><Link href={`/profiles/${did}`}>{recipe.author.handle}</Link></BreadcrumbLink>
+                <BreadcrumbLink asChild><Link href={`/profiles/${recipe.author.handle}`}>{recipe.author.handle}</Link></BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
