@@ -66,18 +66,20 @@ function RouteComponent() {
           </Breadcrumb>
         </div>
       </header>
-      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <div className="max-w-6xl">
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-            {recipe.title}
-          </h1>
-          <p className="leading-7 [&:not(:first-child)]:mt-6">
-            {recipe.description}
-          </p>
-        </div>
-
-        <div className="grid lg:grid-cols-3 gap-4">
-          <Card className="lg:col-start-3">
+      <div className="flex flex-col gap-4 px-4 py-8 items-center">
+        <p className="text-muted-foreground">
+          By @{recipe.author.handle}
+        </p>
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+          {recipe.title}
+        </h1>
+        <p className="leading-7">
+          {recipe.description}
+        </p>
+      </div>
+      <div className="flex flex-1 flex-col gap-4 p-4 pt-0 w-full max-w-2xl items-center mx-auto">
+        <div className="grid gap-4 w-full">
+          <Card>
             <CardHeader>
               <CardTitle>Ingredients</CardTitle>
             </CardHeader>
@@ -91,13 +93,12 @@ function RouteComponent() {
               </ul>
             </CardContent>
           </Card>
-
-          <Card className="lg:col-start-1 lg:row-start-1 lg:col-span-2">
+          <Card>
             <CardHeader>
               <CardTitle>Steps</CardTitle>
             </CardHeader>
             <CardContent>
-              <ol>
+              <ol className="list-decimal list-inside">
                 {recipe.steps.map((ing, idx) => (
                   <li key={idx}>{ing.text}</li>
                 ))}
