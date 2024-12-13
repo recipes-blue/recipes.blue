@@ -13,57 +13,70 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as appRecipesAuthorRkeyImport } from './routes/(app)/recipes/$author/$rkey'
+import { Route as Import } from './routes/_'
+import { Route as appRecipesAuthorRkeyImport } from './routes/_.(app)/recipes/$author/$rkey'
 
 // Create Virtual Routes
 
-const appIndexLazyImport = createFileRoute('/(app)/')()
-const authLoginLazyImport = createFileRoute('/(auth)/login')()
+const appIndexLazyImport = createFileRoute('/_/(app)/')()
+const authLoginLazyImport = createFileRoute('/_/(auth)/login')()
 
 // Create/Update Routes
+
+const Route = Import.update({
+  id: '/_',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const appIndexLazyRoute = appIndexLazyImport
   .update({
     id: '/(app)/',
     path: '/',
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => Route,
   } as any)
-  .lazy(() => import('./routes/(app)/index.lazy').then((d) => d.Route))
+  .lazy(() => import('./routes/_.(app)/index.lazy').then((d) => d.Route))
 
 const authLoginLazyRoute = authLoginLazyImport
   .update({
     id: '/(auth)/login',
     path: '/login',
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => Route,
   } as any)
-  .lazy(() => import('./routes/(auth)/login.lazy').then((d) => d.Route))
+  .lazy(() => import('./routes/_.(auth)/login.lazy').then((d) => d.Route))
 
 const appRecipesAuthorRkeyRoute = appRecipesAuthorRkeyImport.update({
   id: '/(app)/recipes/$author/$rkey',
   path: '/recipes/$author/$rkey',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => Route,
 } as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/(auth)/login': {
-      id: '/(auth)/login'
+    '/_': {
+      id: '/_'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof Import
+      parentRoute: typeof rootRoute
+    }
+    '/_/(auth)/login': {
+      id: '/_/(auth)/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof authLoginLazyImport
       parentRoute: typeof rootRoute
     }
-    '/(app)/': {
-      id: '/(app)/'
+    '/_/(app)/': {
+      id: '/_/(app)/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof appIndexLazyImport
       parentRoute: typeof rootRoute
     }
-    '/(app)/recipes/$author/$rkey': {
-      id: '/(app)/recipes/$author/$rkey'
+    '/_/(app)/recipes/$author/$rkey': {
+      id: '/_/(app)/recipes/$author/$rkey'
       path: '/recipes/$author/$rkey'
       fullPath: '/recipes/$author/$rkey'
       preLoaderRoute: typeof appRecipesAuthorRkeyImport
@@ -74,7 +87,22 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
+interface RouteChildren {
+  authLoginLazyRoute: typeof authLoginLazyRoute
+  appIndexLazyRoute: typeof appIndexLazyRoute
+  appRecipesAuthorRkeyRoute: typeof appRecipesAuthorRkeyRoute
+}
+
+const RouteChildren: RouteChildren = {
+  authLoginLazyRoute: authLoginLazyRoute,
+  appIndexLazyRoute: appIndexLazyRoute,
+  appRecipesAuthorRkeyRoute: appRecipesAuthorRkeyRoute,
+}
+
+const RouteWithChildren = Route._addFileChildren(RouteChildren)
+
 export interface FileRoutesByFullPath {
+  '': typeof RouteWithChildren
   '/login': typeof authLoginLazyRoute
   '/': typeof appIndexLazyRoute
   '/recipes/$author/$rkey': typeof appRecipesAuthorRkeyRoute
@@ -88,30 +116,32 @@ export interface FileRoutesByTo {
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/(auth)/login': typeof authLoginLazyRoute
-  '/(app)/': typeof appIndexLazyRoute
-  '/(app)/recipes/$author/$rkey': typeof appRecipesAuthorRkeyRoute
+  '/_': typeof RouteWithChildren
+  '/_/(auth)/login': typeof authLoginLazyRoute
+  '/_/(app)/': typeof appIndexLazyRoute
+  '/_/(app)/recipes/$author/$rkey': typeof appRecipesAuthorRkeyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/login' | '/' | '/recipes/$author/$rkey'
+  fullPaths: '' | '/login' | '/' | '/recipes/$author/$rkey'
   fileRoutesByTo: FileRoutesByTo
   to: '/login' | '/' | '/recipes/$author/$rkey'
-  id: '__root__' | '/(auth)/login' | '/(app)/' | '/(app)/recipes/$author/$rkey'
+  id:
+    | '__root__'
+    | '/_'
+    | '/_/(auth)/login'
+    | '/_/(app)/'
+    | '/_/(app)/recipes/$author/$rkey'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  authLoginLazyRoute: typeof authLoginLazyRoute
-  appIndexLazyRoute: typeof appIndexLazyRoute
-  appRecipesAuthorRkeyRoute: typeof appRecipesAuthorRkeyRoute
+  Route: typeof RouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  authLoginLazyRoute: authLoginLazyRoute,
-  appIndexLazyRoute: appIndexLazyRoute,
-  appRecipesAuthorRkeyRoute: appRecipesAuthorRkeyRoute,
+  Route: RouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -124,19 +154,28 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/(auth)/login",
-        "/(app)/",
-        "/(app)/recipes/$author/$rkey"
+        "/_"
       ]
     },
-    "/(auth)/login": {
-      "filePath": "(auth)/login.lazy.tsx"
+    "/_": {
+      "filePath": "_.tsx",
+      "children": [
+        "/_/(auth)/login",
+        "/_/(app)/",
+        "/_/(app)/recipes/$author/$rkey"
+      ]
     },
-    "/(app)/": {
-      "filePath": "(app)/index.lazy.tsx"
+    "/_/(auth)/login": {
+      "filePath": "_.(auth)/login.lazy.tsx",
+      "parent": "/_"
     },
-    "/(app)/recipes/$author/$rkey": {
-      "filePath": "(app)/recipes/$author/$rkey.tsx"
+    "/_/(app)/": {
+      "filePath": "_.(app)/index.lazy.tsx",
+      "parent": "/_"
+    },
+    "/_/(app)/recipes/$author/$rkey": {
+      "filePath": "_.(app)/recipes/$author/$rkey.tsx",
+      "parent": "/_"
     }
   }
 }

@@ -15,11 +15,10 @@ import { queryClient } from '@/lib/react-query'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { rpc } from '@/hooks/use-xrpc'
 
-export const Route = createFileRoute('/(app)/recipes/$author/$rkey')({
-  loader: ({ params: { author, rkey }, }) => {
-    queryClient.ensureQueryData(recipeQueryOptions(rpc, author, rkey));
+export const Route = createFileRoute('/_/(app)/recipes/$author/$rkey')({
+  loader: ({ params: { author, rkey } }) => {
+    queryClient.ensureQueryData(recipeQueryOptions(rpc, author, rkey))
   },
-
   component: RouteComponent,
 })
 
@@ -27,7 +26,10 @@ function RouteComponent() {
   const { author, rkey } = Route.useParams()
   const {
     data: { recipe },
-  } = useSuspenseQuery(recipeQueryOptions(rpc, author, rkey));
+    error,
+  } = useSuspenseQuery(recipeQueryOptions(rpc, author, rkey))
+
+  if (error) return <p>Error</p>
 
   return (
     <>
@@ -38,15 +40,23 @@ function RouteComponent() {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink asChild><Link to="/">Community</Link></BreadcrumbLink>
+                <BreadcrumbLink asChild>
+                  <Link to="/">Community</Link>
+                </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink asChild><Link to="/">Browse Recipes</Link></BreadcrumbLink>
+                <BreadcrumbLink asChild>
+                  <Link to="/">Browse Recipes</Link>
+                </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink asChild><Link href={`/profiles/${recipe.author.handle}`}>{recipe.author.handle}</Link></BreadcrumbLink>
+                <BreadcrumbLink asChild>
+                  <Link href={`/profiles/${recipe.author.handle}`}>
+                    {recipe.author.handle}
+                  </Link>
+                </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
@@ -58,8 +68,12 @@ function RouteComponent() {
       </header>
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
         <div className="max-w-6xl">
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">{recipe.title}</h1>
-          <p className="leading-7 [&:not(:first-child)]:mt-6">{recipe.description}</p>
+          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+            {recipe.title}
+          </h1>
+          <p className="leading-7 [&:not(:first-child)]:mt-6">
+            {recipe.description}
+          </p>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-4">
@@ -70,7 +84,9 @@ function RouteComponent() {
             <CardContent>
               <ul>
                 {recipe.ingredients.map((ing, idx) => (
-                  <li key={idx}>{ing.name} ({ing.amount} {ing.unit})</li>
+                  <li key={idx}>
+                    {ing.name} ({ing.amount} {ing.unit})
+                  </li>
                 ))}
               </ul>
             </CardContent>

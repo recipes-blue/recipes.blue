@@ -13,12 +13,12 @@ import QueryPlaceholder from '@/components/query-placeholder'
 import { useRecipesQuery } from '@/queries/recipe'
 import { RecipeCard } from '@/screens/Recipes/RecipeCard'
 
-export const Route = createLazyFileRoute('/(app)/')({
+export const Route = createLazyFileRoute('/_/(app)/')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const query = useRecipesQuery('');
+  const query = useRecipesQuery('')
 
   return (
     <>
@@ -29,7 +29,9 @@ function RouteComponent() {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink asChild><Link href="/">Community</Link></BreadcrumbLink>
+                <BreadcrumbLink asChild>
+                  <Link href="/">Community</Link>
+                </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
@@ -52,7 +54,7 @@ function RouteComponent() {
                 steps={recipe.steps}
                 ingredients={recipe.ingredients}
                 key={idx}
-                />
+              />
             ))}
           </QueryPlaceholder>
         </div>
