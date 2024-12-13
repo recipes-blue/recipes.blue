@@ -17,7 +17,7 @@ async function serializeKeyToJwk() {
   const privateJwkString = JSON.stringify(privateJwk);
 
   // save 3 of these to PRIVATE_KEY_X env vars
-  console.log(privateJwkString);
+  console.log(publicJwkString, privateJwkString);
 
   return { publicJwkString, privateJwkString };
 }
