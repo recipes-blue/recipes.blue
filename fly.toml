@@ -8,6 +8,9 @@ primary_region = "lhr"
   web = "bash -c 'cd apps/api && node dist/index.js'"
   ingester = "bash -c 'cd apps/ingester && node dist/index.js'"
 
+[env]
+  CORS_ORIGINS = "https://recipes.blue"
+
 [deploy]
   release_command = "bash -c 'cd libs/database && pnpm db:migrate'"
 
