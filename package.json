@@ -1,6 +1,6 @@
 {
   "private": true,
-  "packageManager": "pnpm@9.12.2",
+  "packageManager": "bun@1.1.38",
   "devDependencies": {
     "turbo": "^2.3.3"
   },
@@ -9,5 +9,6 @@
     "build": "turbo build",
     "db:generate": "turbo db:generate",
     "db:migrate": "turbo db:migrate"
-  }
+  },
+  "workspaces": ["apps/*", "libs/*"]
 }
