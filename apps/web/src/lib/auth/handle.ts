@@ -1,4 +1,4 @@
-import { parseDid } from "@cookware/lexicons";
+import { DID, getDidDoc, parseDid } from "@cookware/lexicons";
 
 type DNSLookupAnswer = {
   TTL: number;
@@ -28,22 +28,27 @@ export const dnsLookup = async (domain: string, type: string = 'A') => {
  */
 export const resolveHandle = async (handle: string) => {
   let didStr: string;
-  const domain = await dnsLookup(`_atproto.${handle}`, 'TXT');
-  if (domain.Answer) {
-    const { data } = domain.Answer[0];
-    console.log(data);
-    if (!data.startsWith('"did=did:')) {
-      throw new Error(`Invalid TXT response to _atproto.${handle} DNS query.`);
-    }
-    didStr = data.split('=')[1].replace('"', '');
+
+  if (handle.startsWith('did')) {
+    didStr = handle;
   } else {
-    // No DNS record found, try with HTTP.
-    const res = await fetch(`https://${handle}/.well-known/atproto-did`);
-    const data = await res.text();
-    if (!data.startsWith('did:')) {
-      throw new Error(`Invalid response to https://${handle}/.well-known/atproto-did.`);
+    const domain = await dnsLookup(`_atproto.${handle}`, 'TXT');
+    if (domain.Answer) {
+      const { data } = domain.Answer[0];
+      console.log(data);
+      if (!data.startsWith('"did=did:')) {
+        throw new Error(`Invalid TXT response to _atproto.${handle} DNS query.`);
+      }
+      didStr = data.split('=')[1].replace('"', '');
+    } else {
+      // No DNS record found, try with HTTP.
+      const res = await fetch(`https://${handle}/.well-known/atproto-did`);
+      const data = await res.text();
+      if (!data.startsWith('did:')) {
+        throw new Error(`Invalid response to https://${handle}/.well-known/atproto-did.`);
+      }
+      didStr = data;
     }
-    didStr = data;
   }
 
   const did = parseDid(didStr);
@@ -51,4 +56,9 @@ export const resolveHandle = async (handle: string) => {
     throw new Error(`DID '${didStr}' is invalidly formatted.`);
   }
   return did;
+};
+
+export const resolveDid = async (did: DID) => {
+  const didDoc = await getDidDoc(did);
+  return didDoc.alsoKnownAs[0].substring(5);
 };

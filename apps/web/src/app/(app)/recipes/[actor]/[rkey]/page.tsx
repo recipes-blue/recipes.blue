@@ -12,6 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { resolveDid, resolveHandle } from "@/lib/auth/handle";
 
 type Props = {
   params: Promise<{
@@ -22,7 +23,9 @@ type Props = {
 
 export default async function Page({ params }: Props) {
   const { actor, rkey } = await params;
-  const recipe = await getRecipe(actor, rkey);
+  const did = await resolveHandle(decodeURIComponent(actor));
+  const handle = await resolveDid(did);
+  const recipe = await getRecipe(did, rkey);
   if (!recipe) throw notFound();
 
   return (
@@ -35,13 +38,19 @@ export default async function Page({ params }: Props) {
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
                 <BreadcrumbLink href="/">
+                  Home
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbItem className="hidden md:block">
+                <BreadcrumbLink href="/recipes">
                   Recipes
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href={`/recipes/${actor}`}>
-                  {actor}
+                <BreadcrumbLink href={`/recipes/${handle}`}>
+                  @{handle}
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
@@ -99,11 +108,13 @@ export default async function Page({ params }: Props) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { actor, rkey } = await params;
-  const recipe = await getRecipe(actor, rkey);
+  const did = await resolveHandle(decodeURIComponent(actor));
+  const handle = await resolveDid(did);
+  const recipe = await getRecipe(did, rkey);
   if (!recipe) throw notFound();
 
   return {
-    title: recipe.title,
+    title: `${recipe.title} by ${handle}`,
     description: recipe.description,
   };
 }
