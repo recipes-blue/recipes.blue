@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { db, recipeTable } from '@cookware/database';
 import { and, eq, sql } from 'drizzle-orm';
-import { getDidDoc, getDidFromHandleOrDid } from '@cookware/lexicons';
+import { getDidDoc, getDidFromHandleOrDid } from '@cookware/lexicons/dist';
 
 export const xrpcApp = new Hono();
 

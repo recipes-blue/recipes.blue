@@ -1,12 +1,13 @@
 FROM node:22-slim AS base
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+COPY --from=oven/bun:1 /usr/local/bin/bun /usr/local/bin/bun
 
 FROM base AS build
 WORKDIR /usr/src/app
-COPY pnpm-lock.yaml .
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm fetch
 COPY . .
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
-RUN pnpm run -r build
+RUN bun install
+RUN bun run build
+
+FROM build AS end
+
+ENV NODE_ENV=production
+ENV ENV=production

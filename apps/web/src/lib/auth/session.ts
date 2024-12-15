@@ -2,8 +2,6 @@ import { cookies } from "next/headers";
 import { cache } from "react";
 import { z } from "zod";
 import { getClient } from ".";
-import { OAuthSession } from "@atproto/oauth-client-node";
-import { Agent } from "@atproto/api";
 
 const AUTH_COOKIE_NAME = 'cookware_session';
 

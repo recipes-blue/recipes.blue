@@ -1,4 +1,4 @@
-import { DID, getDidDoc, parseDid } from "@cookware/lexicons";
+import { DID, getDidDoc, parseDid } from "@cookware/lexicons/dist";
 
 type DNSLookupAnswer = {
   TTL: number;

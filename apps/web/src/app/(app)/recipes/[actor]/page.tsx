@@ -22,7 +22,7 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
       title: `Recipes by ${handle}`,
       description: 'Discover recipes from other members of the community.',
     }
-  } catch (e) {
+  } catch (_) {
     throw notFound();
   }
 };
@@ -34,7 +34,7 @@ export default async function Page({ params }: Props) {
   try {
     did = await resolveHandle(decodeURIComponent(actor));
     handle = await resolveDid(did);
-  } catch (e) {
+  } catch (_) {
     throw notFound();
   }
   const recipes = await getRecipes(undefined, did);
@@ -68,7 +68,7 @@ export default async function Page({ params }: Props) {
       </header>
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
         <div className="flex flex-col gap-4 p-4 pt-6 items-center">
-          <h1 className="text-4xl font-black">{handle}'s Recipes</h1>
+          <h1 className="text-4xl font-black">{handle}&apos;s Recipes</h1>
           <p className="text-lg">All recipes @{handle} has posted.</p>
         </div>
         <div className="flex-1 flex flex-col items-center p-4">

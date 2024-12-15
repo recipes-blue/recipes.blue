@@ -8,11 +8,6 @@ import {
 } from "lucide-react"
 
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
@@ -45,7 +40,7 @@ export const CurrentUserButton = ({ session }: { session?: { did: string; } }) =
           </Avatar>*/}
           <div className="grid flex-1 text-left text-sm leading-tight">
             <span className="truncate font-semibold">{session.did}</span>
-            <span className="truncate text-xs">{session.sub}</span>
+            <span className="truncate text-xs">{session.did}</span>
           </div>
           <ChevronsUpDown className="ml-auto size-4" />
         </SidebarMenuButton>

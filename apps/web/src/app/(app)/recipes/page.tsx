@@ -37,7 +37,7 @@ export default async function Page() {
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
         <div className="flex flex-col gap-4 p-4 pt-6 items-center">
           <h1 className="text-4xl font-black">Community Recipes!</h1>
-          <p className="text-lg">See what the community's been cooking.</p>
+          <p className="text-lg">See what the community&apos;s been cooking.</p>
         </div>
         <div className="flex-1 flex flex-col items-center p-4">
           <div className="flex flex-col gap-4 max-w-2xl w-full items-center">

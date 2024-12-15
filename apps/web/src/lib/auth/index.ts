@@ -6,7 +6,7 @@ import { SessionStore, StateStore } from "./storage";
 import envConfig from "@/envConfig";
 
 export const getClient = async () => {
-  let appUrl = envConfig.combinedEnv.PUBLIC_URL;
+  const appUrl = envConfig.combinedEnv.PUBLIC_URL;
 
   return new NodeOAuthClient({
     clientMetadata: {
