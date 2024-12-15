@@ -1,3 +1,5 @@
+import { parseDid } from "@cookware/lexicons";
+
 type DNSLookupAnswer = {
   TTL: number;
   data: string;
@@ -25,6 +27,7 @@ export const dnsLookup = async (domain: string, type: string = 'A') => {
  * Resolves a handle from DNS (first) or HTTP to a DID.
  */
 export const resolveHandle = async (handle: string) => {
+  let didStr: string;
   const domain = await dnsLookup(`_atproto.${handle}`, 'TXT');
   if (domain.Answer) {
     const { data } = domain.Answer[0];
@@ -32,7 +35,7 @@ export const resolveHandle = async (handle: string) => {
     if (!data.startsWith('"did=did:')) {
       throw new Error(`Invalid TXT response to _atproto.${handle} DNS query.`);
     }
-    return data.split('=')[1].replace('"', '');
+    didStr = data.split('=')[1].replace('"', '');
   } else {
     // No DNS record found, try with HTTP.
     const res = await fetch(`https://${handle}/.well-known/atproto-did`);
@@ -40,6 +43,12 @@ export const resolveHandle = async (handle: string) => {
     if (!data.startsWith('did:')) {
       throw new Error(`Invalid response to https://${handle}/.well-known/atproto-did.`);
     }
-    return data;
+    didStr = data;
   }
+
+  const did = parseDid(didStr);
+  if (!did) {
+    throw new Error(`DID '${didStr}' is invalidly formatted.`);
+  }
+  return did;
 };

@@ -18,6 +18,7 @@
     "@sentry/node": "^8.42.0",
     "@skyware/jetstream": "^0.2.1",
     "bufferutil": "^4.0.8",
+    "dotenv": "^16.4.7",
     "drizzle-orm": "^0.37.0",
     "pino": "^9.5.0",
     "ws": "^8.18.0",

@@ -3,10 +3,10 @@
 import { JoseKey } from "@atproto/jwk-jose";
 import { NodeOAuthClient } from "@atproto/oauth-client-node";
 import { SessionStore, StateStore } from "./storage";
-import { headers } from "next/headers";
+import envConfig from "@/envConfig";
 
 export const getClient = async () => {
-  let appUrl = `https://${(await headers()).get('Host')}` as const;
+  let appUrl = envConfig.combinedEnv.PUBLIC_URL;
 
   return new NodeOAuthClient({
     clientMetadata: {
