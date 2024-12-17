@@ -1,8 +1,8 @@
 import * as React from "react"
 import {
-  NotebookPen,
-  Settings2,
-  Users,
+  Book,
+  CookingPot,
+  ForkKnife,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -11,6 +11,10 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
 import { Suspense } from "react"
@@ -18,17 +22,11 @@ import { Button } from "./ui/button"
 import { Link } from "@tanstack/react-router"
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-
   navMain: [
     {
-      title: "Community",
+      title: "Recipes",
       url: "#",
-      icon: Users,
+      icon: ForkKnife,
       isActive: true,
       items: [
         {
@@ -40,30 +38,19 @@ const data = {
           title: "Starred",
           url: "#",
         },
-        {
-          title: "Settings",
-          url: "#",
-        },
       ],
     },
     {
-      title: "Yours",
+      title: "Cookbooks",
       url: "#",
-      icon: NotebookPen,
+      icon: Book,
       items: [
         {
-          title: "Recipes",
-          url: "#",
+          title: "Browse",
+          url: "/",
         },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
         {
-          title: "General",
+          title: "Starred",
           url: "#",
         },
       ],
@@ -74,6 +61,22 @@ const data = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton size="lg" asChild>
+              <a href="#">
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                  <CookingPot className="size-4" />
+                </div>
+                <div className="flex flex-col gap-0.5 leading-none">
+                  <span className="font-semibold">Cookware</span>
+                </div>
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
       </SidebarContent>

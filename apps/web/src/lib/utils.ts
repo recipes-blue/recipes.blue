@@ -5,4 +5,4 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const SERVER_URL = 'cookware.fly.dev' as const;
+export const SERVER_URL = import.meta.env.VITE_API_SERVICE;

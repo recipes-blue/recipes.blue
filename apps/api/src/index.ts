@@ -51,8 +51,11 @@ app.use(async (c, next) => {
 
 app.use(cors({
   origin: (origin, _ctx) => {
-    if (env.ENV == 'development') origin;
-
+    if (env.ENV == 'development') {
+      const host = _ctx.req.header('Host');
+      console.log(`https://${host}`);
+      return `https://${host}`;
+    }
     return env.CORS_ORIGINS.includes(origin)
       ? origin
       : 'https://cookware.hayden.moe';
