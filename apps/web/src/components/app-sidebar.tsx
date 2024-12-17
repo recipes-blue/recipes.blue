@@ -17,9 +17,6 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { Suspense } from "react"
-import { Button } from "./ui/button"
-import { Link } from "@tanstack/react-router"
 
 const data = {
   navMain: [
@@ -81,13 +78,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <Suspense fallback={
-          <Button asChild>
-            <Link href="/login" className="w-full">Log in</Link>
-          </Button>
-        } name="nav-user-data">
-          <NavUser />
-        </Suspense>
+        <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

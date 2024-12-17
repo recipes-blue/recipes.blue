@@ -22,7 +22,7 @@ export const RecipeCard = ({ rkey, author, ...recipe }: RecipeCardProps) => {
       <Card className="w-full">
         <CardHeader>
           <CardTitle>{recipe.title}</CardTitle>
-          <CardDescription>By <Link href="#">@{author}</Link></CardDescription>
+          <CardDescription>By @{author}</CardDescription>
         </CardHeader>
         <CardContent>
           <p>{recipe.description}</p>
