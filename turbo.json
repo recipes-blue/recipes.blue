@@ -6,7 +6,12 @@
     },
     "dev": {
       "persistent": true,
-      "cache": false
+      "cache": false,
+      "passThroughEnv": [
+        "TURSO_CONNECTION_URL",
+        "TURSO_AUTH_TOKEN",
+        "ENV"
+      ]
     },
     "db:generate": {
       "cache": false
