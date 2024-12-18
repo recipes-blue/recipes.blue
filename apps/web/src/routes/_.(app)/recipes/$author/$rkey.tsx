@@ -66,14 +66,14 @@ function RouteComponent() {
           </Breadcrumb>
         </div>
       </header>
-      <div className="flex flex-col gap-4 px-4 py-8 items-center">
+      <div className="flex flex-col gap-4 px-4 py-8 items-center max-w-2xl w-full mx-auto">
         <p className="text-muted-foreground">
           By @{recipe.author.handle}
         </p>
         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
           {recipe.title}
         </h1>
-        <p className="leading-7">
+        <p className="leading-7 text-center">
           {recipe.description}
         </p>
       </div>
