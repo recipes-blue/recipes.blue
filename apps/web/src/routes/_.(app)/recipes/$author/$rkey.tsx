@@ -53,7 +53,7 @@ function RouteComponent() {
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem className="hidden md:block">
                 <BreadcrumbLink asChild>
-                  <Link href={`/profiles/${recipe.author.handle}`}>
+                  <Link to="/recipes/$author" params={{ author: recipe.author.handle }}>
                     {recipe.author.handle}
                   </Link>
                 </BreadcrumbLink>

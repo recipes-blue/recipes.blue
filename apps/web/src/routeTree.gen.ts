@@ -21,6 +21,9 @@ import { Route as appRecipesAuthorRkeyImport } from './routes/_.(app)/recipes/$a
 const appIndexLazyImport = createFileRoute('/_/(app)/')()
 const authLoginLazyImport = createFileRoute('/_/(auth)/login')()
 const appRecipesNewLazyImport = createFileRoute('/_/(app)/recipes/new')()
+const appRecipesAuthorIndexLazyImport = createFileRoute(
+  '/_/(app)/recipes/$author/',
+)()
 
 // Create/Update Routes
 
@@ -52,6 +55,16 @@ const appRecipesNewLazyRoute = appRecipesNewLazyImport
     getParentRoute: () => Route,
   } as any)
   .lazy(() => import('./routes/_.(app)/recipes/new.lazy').then((d) => d.Route))
+
+const appRecipesAuthorIndexLazyRoute = appRecipesAuthorIndexLazyImport
+  .update({
+    id: '/(app)/recipes/$author/',
+    path: '/recipes/$author/',
+    getParentRoute: () => Route,
+  } as any)
+  .lazy(() =>
+    import('./routes/_.(app)/recipes/$author/index.lazy').then((d) => d.Route),
+  )
 
 const appRecipesAuthorRkeyRoute = appRecipesAuthorRkeyImport.update({
   id: '/(app)/recipes/$author/$rkey',
@@ -98,6 +111,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof appRecipesAuthorRkeyImport
       parentRoute: typeof rootRoute
     }
+    '/_/(app)/recipes/$author/': {
+      id: '/_/(app)/recipes/$author/'
+      path: '/recipes/$author'
+      fullPath: '/recipes/$author'
+      preLoaderRoute: typeof appRecipesAuthorIndexLazyImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -108,6 +128,7 @@ interface RouteChildren {
   appIndexLazyRoute: typeof appIndexLazyRoute
   appRecipesNewLazyRoute: typeof appRecipesNewLazyRoute
   appRecipesAuthorRkeyRoute: typeof appRecipesAuthorRkeyRoute
+  appRecipesAuthorIndexLazyRoute: typeof appRecipesAuthorIndexLazyRoute
 }
 
 const RouteChildren: RouteChildren = {
@@ -115,6 +136,7 @@ const RouteChildren: RouteChildren = {
   appIndexLazyRoute: appIndexLazyRoute,
   appRecipesNewLazyRoute: appRecipesNewLazyRoute,
   appRecipesAuthorRkeyRoute: appRecipesAuthorRkeyRoute,
+  appRecipesAuthorIndexLazyRoute: appRecipesAuthorIndexLazyRoute,
 }
 
 const RouteWithChildren = Route._addFileChildren(RouteChildren)
@@ -125,6 +147,7 @@ export interface FileRoutesByFullPath {
   '/': typeof appIndexLazyRoute
   '/recipes/new': typeof appRecipesNewLazyRoute
   '/recipes/$author/$rkey': typeof appRecipesAuthorRkeyRoute
+  '/recipes/$author': typeof appRecipesAuthorIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
@@ -132,6 +155,7 @@ export interface FileRoutesByTo {
   '/': typeof appIndexLazyRoute
   '/recipes/new': typeof appRecipesNewLazyRoute
   '/recipes/$author/$rkey': typeof appRecipesAuthorRkeyRoute
+  '/recipes/$author': typeof appRecipesAuthorIndexLazyRoute
 }
 
 export interface FileRoutesById {
@@ -141,13 +165,25 @@ export interface FileRoutesById {
   '/_/(app)/': typeof appIndexLazyRoute
   '/_/(app)/recipes/new': typeof appRecipesNewLazyRoute
   '/_/(app)/recipes/$author/$rkey': typeof appRecipesAuthorRkeyRoute
+  '/_/(app)/recipes/$author/': typeof appRecipesAuthorIndexLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/login' | '/' | '/recipes/new' | '/recipes/$author/$rkey'
+  fullPaths:
+    | ''
+    | '/login'
+    | '/'
+    | '/recipes/new'
+    | '/recipes/$author/$rkey'
+    | '/recipes/$author'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/' | '/recipes/new' | '/recipes/$author/$rkey'
+  to:
+    | '/login'
+    | '/'
+    | '/recipes/new'
+    | '/recipes/$author/$rkey'
+    | '/recipes/$author'
   id:
     | '__root__'
     | '/_'
@@ -155,6 +191,7 @@ export interface FileRouteTypes {
     | '/_/(app)/'
     | '/_/(app)/recipes/new'
     | '/_/(app)/recipes/$author/$rkey'
+    | '/_/(app)/recipes/$author/'
   fileRoutesById: FileRoutesById
 }
 
@@ -185,7 +222,8 @@ export const routeTree = rootRoute
         "/_/(auth)/login",
         "/_/(app)/",
         "/_/(app)/recipes/new",
-        "/_/(app)/recipes/$author/$rkey"
+        "/_/(app)/recipes/$author/$rkey",
+        "/_/(app)/recipes/$author/"
       ]
     },
     "/_/(auth)/login": {
@@ -202,6 +240,10 @@ export const routeTree = rootRoute
     },
     "/_/(app)/recipes/$author/$rkey": {
       "filePath": "_.(app)/recipes/$author/$rkey.tsx",
+      "parent": "/_"
+    },
+    "/_/(app)/recipes/$author/": {
+      "filePath": "_.(app)/recipes/$author/index.lazy.tsx",
       "parent": "/_"
     }
   }

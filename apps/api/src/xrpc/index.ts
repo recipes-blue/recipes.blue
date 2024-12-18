@@ -1,21 +1,30 @@
 import { Hono } from 'hono';
 import { db, recipeTable } from '@cookware/database';
 import { and, eq, sql } from 'drizzle-orm';
-import { getDidDoc, getDidFromHandleOrDid } from '@cookware/lexicons';
+import { DID, getDidDoc, getDidFromHandleOrDid, parseDid } from '@cookware/lexicons';
 
 export const xrpcApp = new Hono();
 
 xrpcApp.get('/moe.hayden.cookware.getRecipes', async ctx => {
-  const recipes = await db.select({
-    rkey: recipeTable.rkey,
-    title: recipeTable.title,
-    description: recipeTable.description,
-    ingredientsCount: sql`json_array_length(${recipeTable.ingredients})`,
-    stepsCount: sql`json_array_length(${recipeTable.steps})`,
-    createdAt: recipeTable.createdAt,
-    authorDid: recipeTable.authorDid,
-    uri: sql`concat(${recipeTable.authorDid}, "/", ${recipeTable.rkey})`.as('uri'),
-  }).from(recipeTable);
+  const { did: didQuery } = ctx.req.query();
+
+  let did: DID | null = null;
+  if (didQuery)
+    did = await getDidFromHandleOrDid(didQuery);
+
+  const recipes = await db
+    .select({
+      rkey: recipeTable.rkey,
+      title: recipeTable.title,
+      description: recipeTable.description,
+      ingredientsCount: sql`json_array_length(${recipeTable.ingredients})`,
+      stepsCount: sql`json_array_length(${recipeTable.steps})`,
+      createdAt: recipeTable.createdAt,
+      authorDid: recipeTable.authorDid,
+      uri: sql`concat(${recipeTable.authorDid}, "/", ${recipeTable.rkey})`.as('uri'),
+    })
+    .from(recipeTable)
+    .where(did ? eq(recipeTable.authorDid, did) : undefined);
 
   const results = [];
   const eachRecipe = async (r: typeof recipes[0]) => ({
