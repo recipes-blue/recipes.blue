@@ -98,7 +98,7 @@ function RouteComponent() {
               <CardTitle>Steps</CardTitle>
             </CardHeader>
             <CardContent>
-              <ol className="list-decimal list-inside">
+              <ol className="list-decimal gap-y-4 flex flex-col ml-4">
                 {recipe.steps.map((ing, idx) => (
                   <li key={idx}>{ing.text}</li>
                 ))}
