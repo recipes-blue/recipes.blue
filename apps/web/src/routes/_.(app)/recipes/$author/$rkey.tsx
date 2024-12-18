@@ -84,7 +84,7 @@ function RouteComponent() {
               <CardTitle>Ingredients</CardTitle>
             </CardHeader>
             <CardContent>
-              <ul>
+              <ul className="list-disc flex flex-col ml-4">
                 {recipe.ingredients.map((ing, idx) => (
                   <li key={idx}>
                     {ing.name} ({ing.amount} {ing.unit})
