@@ -3,6 +3,8 @@ primary_region = "lhr"
 
 [build]
   dockerfile = "Dockerfile"
+  [build.args]
+    VITE_API_SERVICE = "recipes.blue"
 
 [processes]
   web = "bash -c 'cd apps/api && node dist/index.js'"
