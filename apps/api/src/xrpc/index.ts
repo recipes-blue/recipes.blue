@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import { db, recipeTable } from '@cookware/database';
-import { and, eq, sql } from 'drizzle-orm';
+import { and, desc, eq, sql } from 'drizzle-orm';
 import { DID, getDidDoc, getDidFromHandleOrDid, parseDid } from '@cookware/lexicons';
 
 export const xrpcApp = new Hono();
@@ -24,7 +24,8 @@ xrpcApp.get('/moe.hayden.cookware.getRecipes', async ctx => {
       uri: sql`concat(${recipeTable.authorDid}, "/", ${recipeTable.rkey})`.as('uri'),
     })
     .from(recipeTable)
-    .where(did ? eq(recipeTable.authorDid, did) : undefined);
+    .where(did ? eq(recipeTable.authorDid, did) : undefined)
+    .orderBy(desc(recipeTable.createdAt));
 
   const results = [];
   const eachRecipe = async (r: typeof recipes[0]) => ({

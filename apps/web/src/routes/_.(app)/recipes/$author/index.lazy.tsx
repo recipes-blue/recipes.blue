@@ -49,8 +49,8 @@ function RouteComponent() {
         </div>
       </header>
       <div className="flex flex-col gap-4 p-4 pt-6 items-center">
-        <h1 className="text-4xl font-black">Community Recipes!</h1>
-        <p className="text-lg">See what the community's been cooking.</p>
+        <h1 className="text-4xl font-black">{author}'s recipes!</h1>
+        <p className="text-lg">See what they've been cooking.</p>
       </div>
       <div className="flex-1 flex flex-col items-center p-4">
         <div className="flex flex-col gap-4 max-w-2xl w-full items-center">
