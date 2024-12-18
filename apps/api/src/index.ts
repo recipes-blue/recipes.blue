@@ -11,6 +11,7 @@ import { CookwareSession } from "./util/api.js";
 import * as Sentry from "@sentry/node"
 import { readFileSync } from "fs";
 import { getFilePathWithoutDefaultDocument } from "hono/utils/filepath";
+import { recipeApp } from "./recipes/index.js";
 
 if (env.SENTRY_DSN) {
   Sentry.init({
@@ -69,6 +70,7 @@ app.use(cors({
 
 app.route('/xrpc', xrpcApp);
 app.route('/oauth', authApp);
+app.route('/api/recipes', recipeApp);
 
 app.use(async (ctx, next) => {
   try {

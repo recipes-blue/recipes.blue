@@ -12,7 +12,7 @@ import { SidebarTrigger } from '@/components/ui/sidebar'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod"
-import { RecipeRecord } from '@cookware/lexicons'
+import { IngredientObject, RecipeRecord } from '@cookware/lexicons'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -22,12 +22,17 @@ import { Sortable, SortableDragHandle, SortableItem } from '@/components/ui/sort
 import { DragHandleDots2Icon } from '@radix-ui/react-icons'
 import { Label } from '@/components/ui/label'
 import { TrashIcon } from 'lucide-react'
+import { useNewRecipeMutation } from '@/queries/recipe'
 
 export const Route = createLazyFileRoute('/_/(app)/recipes/new')({
   component: RouteComponent,
 })
 
-const schema = RecipeRecord;
+const schema = RecipeRecord.extend({
+  ingredients: z.array(IngredientObject.extend({
+    amount: z.coerce.number().nullable(),
+  })),
+});
 
 function RouteComponent() {
   const form = useForm<z.infer<typeof schema>>({
@@ -44,8 +49,10 @@ function RouteComponent() {
     },
   });
 
+  const { mutate, isPending } = useNewRecipeMutation(form);
+
   const onSubmit = (values: z.infer<typeof schema>) => {
-    console.log(values);
+    mutate({ recipe: values });
   };
 
   const ingredients = useFieldArray({
@@ -61,7 +68,7 @@ function RouteComponent() {
   return (
     <>
       <Breadcrumbs />
-      <div className="flex-1 grid p-4 pt-0 max-w-xl w-full mx-auto">
+      <div className="flex-1 flex-col p-4 pt-0 max-w-xl w-full mx-auto">
         <Card>
           <CardHeader>
             <CardTitle>New recipe</CardTitle>
@@ -91,12 +98,13 @@ function RouteComponent() {
                 <FormField
                   name="description"
                   control={form.control}
-                  render={({ field }) => (
+                  render={({ field: { value, ...field } }) => (
                     <FormItem>
                       <FormLabel>Description</FormLabel>
                       <FormControl>
                         <Textarea
                           className="resize-none"
+                          value={value || ''}
                           {...field}
                         />
                       </FormControl>
@@ -143,6 +151,7 @@ function RouteComponent() {
                                       {...field}
                                     />
                                   </FormControl>
+                                  <FormMessage />
                                 </FormItem>
                               )}
                             />
@@ -156,11 +165,12 @@ function RouteComponent() {
                                     <Input
                                       type="number"
                                       placeholder="#"
-                                      value={value || 0}
+                                      value={value || '0'}
                                       className="h-8"
                                       {...field}
                                     />
                                   </FormControl>
+                                  <FormMessage />
                                 </FormItem>
                               )}
                             />
@@ -178,6 +188,7 @@ function RouteComponent() {
                                       {...field}
                                     />
                                   </FormControl>
+                                  <FormMessage />
                                 </FormItem>
                               )}
                             />
@@ -200,6 +211,7 @@ function RouteComponent() {
                   </Sortable>
                   <Button
                     type="button"
+                    variant="secondary"
                     onClick={(e) => {
                       e.preventDefault();
                       ingredients.append({ name: '', amount: null, unit: null });
@@ -220,7 +232,7 @@ function RouteComponent() {
                           value={field.id}
                           asChild
                         >
-                          <div className="grid grid-cols-[2rem_auto] items-center gap-2">
+                          <div className="grid grid-cols-[2rem_auto_2rem] items-center gap-2">
                             <SortableDragHandle
                               type="button"
                               variant="outline"
@@ -240,9 +252,22 @@ function RouteComponent() {
                                   <FormControl>
                                     <Input className="h-8" {...field} />
                                   </FormControl>
+                                  <FormMessage />
                                 </FormItem>
                               )}
                             />
+
+                            <Button
+                              type="button"
+                              variant="destructive"
+                              className="size-8"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                steps.remove(index);
+                              }}
+                            >
+                              <TrashIcon />
+                            </Button>
                           </div>
                         </SortableItem>
                       ))}
@@ -250,6 +275,7 @@ function RouteComponent() {
                   </Sortable>
                   <Button
                     type="button"
+                    variant="secondary"
                     onClick={(e) => {
                       e.preventDefault();
                       steps.append({ text: '' })
@@ -257,11 +283,15 @@ function RouteComponent() {
                   >Add</Button>
                 </div>
 
-                <Button
-                  type="button"
-                >
-                  Submit
-                </Button>
+                <div className="grid justify-end">
+                  <Button
+                    type="submit"
+                    className="ml-auto"
+                    disabled={isPending}
+                  >
+                    Submit
+                  </Button>
+                </div>
 
               </form>
             </Form>

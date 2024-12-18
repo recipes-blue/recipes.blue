@@ -35,6 +35,10 @@ cookware.dev.hayden.moe {
     rewrite * /oauth{uri}
     reverse_proxy http://host.docker.internal:8080
   }
+  handle_path /api/* {
+    rewrite * /api{uri}
+    reverse_proxy http://host.docker.internal:8080
+  }
 }
 
 http://*.trycloudflare.com {
@@ -46,6 +50,10 @@ http://*.trycloudflare.com {
   }
   handle_path /oauth/* {
     rewrite * /oauth{uri}
+    reverse_proxy http://host.docker.internal:8080
+  }
+  handle_path /api/* {
+    rewrite * /api{uri}
     reverse_proxy http://host.docker.internal:8080
   }
 }
