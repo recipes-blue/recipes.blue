@@ -3,22 +3,24 @@ import {
   SidebarInset,
   SidebarProvider,
 } from '@/components/ui/sidebar'
-import { AuthProvider } from '@/state/auth';
-import { Outlet, createRootRoute } from '@tanstack/react-router'
+import { AuthContextType } from '@/state/auth';
+import { Outlet, createRootRouteWithContext } from '@tanstack/react-router'
 
-export const Route = createRootRoute({
+type RootContext = {
+  auth: AuthContextType;
+};
+
+export const Route = createRootRouteWithContext<RootContext>()({
   component: RootComponent,
 });
 
 function RootComponent() {
   return (
-    <AuthProvider>
-      <SidebarProvider>
-        <AppSidebar />
-        <SidebarInset>
-          <Outlet />
-        </SidebarInset>
-      </SidebarProvider>
-    </AuthProvider>
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <Outlet />
+      </SidebarInset>
+    </SidebarProvider>
   )
 }

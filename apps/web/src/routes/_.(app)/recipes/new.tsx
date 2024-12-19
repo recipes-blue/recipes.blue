@@ -1,4 +1,4 @@
-import { createLazyFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -6,46 +6,72 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-import { Separator } from '@/components/ui/separator'
-import { SidebarTrigger } from '@/components/ui/sidebar'
-import { useFieldArray, useForm } from 'react-hook-form'
-import { z } from 'zod';
-import { zodResolver } from "@hookform/resolvers/zod"
-import { IngredientObject, RecipeRecord } from '@cookware/lexicons'
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Sortable, SortableDragHandle, SortableItem } from '@/components/ui/sortable'
-import { DragHandleDots2Icon } from '@radix-ui/react-icons'
-import { Label } from '@/components/ui/label'
-import { TrashIcon } from 'lucide-react'
-import { useNewRecipeMutation } from '@/queries/recipe'
+} from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { useFieldArray, useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { IngredientObject, RecipeRecord } from "@cookware/lexicons";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Sortable,
+  SortableDragHandle,
+  SortableItem,
+} from "@/components/ui/sortable";
+import { DragHandleDots2Icon } from "@radix-ui/react-icons";
+import { Label } from "@/components/ui/label";
+import { TrashIcon } from "lucide-react";
+import { useNewRecipeMutation } from "@/queries/recipe";
 
-export const Route = createLazyFileRoute('/_/(app)/recipes/new')({
+export const Route = createFileRoute("/_/(app)/recipes/new")({
+  beforeLoad: async ({ context, location }) => {
+    if (!context.auth.isLoggedIn) {
+      throw redirect({
+        to: '/login',
+        search: {
+          redirect: location.href,
+        },
+      });
+    }
+  },
   component: RouteComponent,
-})
+});
 
 const schema = RecipeRecord.extend({
-  ingredients: z.array(IngredientObject.extend({
-    amount: z.coerce.number().nullable(),
-  })),
+  ingredients: z.array(
+    IngredientObject.extend({
+      amount: z.coerce.number().nullable(),
+    }),
+  ),
 });
 
 function RouteComponent() {
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
-      title: '',
-      description: '',
-      ingredients: [
-        { name: '' },
-      ],
-      steps: [
-        { text: '' },
-      ],
+      title: "",
+      description: "",
+      ingredients: [{ name: "" }],
+      steps: [{ text: "" }],
     },
   });
 
@@ -76,8 +102,10 @@ function RouteComponent() {
           </CardHeader>
           <CardContent>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-8"
+              >
                 <FormField
                   name="title"
                   control={form.control}
@@ -104,7 +132,7 @@ function RouteComponent() {
                       <FormControl>
                         <Textarea
                           className="resize-none"
-                          value={value || ''}
+                          value={value || ""}
                           {...field}
                         />
                       </FormControl>
@@ -117,15 +145,12 @@ function RouteComponent() {
                   <Label>Ingredients</Label>
                   <Sortable
                     value={ingredients.fields}
-                    onMove={({ activeIndex, overIndex }) => ingredients.move(activeIndex, overIndex)}
+                    onMove={({ activeIndex, overIndex }) =>
+                      ingredients.move(activeIndex, overIndex)}
                   >
                     <div className="flex w-full flex-col gap-2">
                       {ingredients.fields.map((field, index) => (
-                        <SortableItem
-                          key={field.id}
-                          value={field.id}
-                          asChild
-                        >
+                        <SortableItem key={field.id} value={field.id} asChild>
                           <div className="grid grid-cols-[2rem_1fr_0.2fr_0.2fr_2rem] items-center gap-2">
                             <SortableDragHandle
                               type="button"
@@ -165,7 +190,7 @@ function RouteComponent() {
                                     <Input
                                       type="number"
                                       placeholder="#"
-                                      value={value || '0'}
+                                      value={value || "0"}
                                       className="h-8"
                                       {...field}
                                     />
@@ -184,7 +209,7 @@ function RouteComponent() {
                                     <Input
                                       placeholder="Unit"
                                       className="h-8"
-                                      value={value || ''}
+                                      value={value || ""}
                                       {...field}
                                     />
                                   </FormControl>
@@ -214,24 +239,27 @@ function RouteComponent() {
                     variant="secondary"
                     onClick={(e) => {
                       e.preventDefault();
-                      ingredients.append({ name: '', amount: null, unit: null });
+                      ingredients.append({
+                        name: "",
+                        amount: null,
+                        unit: null,
+                      });
                     }}
-                  >Add</Button>
+                  >
+                    Add
+                  </Button>
                 </div>
 
                 <div className="grid gap-2">
                   <Label>Steps</Label>
                   <Sortable
                     value={steps.fields}
-                    onMove={({ activeIndex, overIndex }) => steps.move(activeIndex, overIndex)}
+                    onMove={({ activeIndex, overIndex }) =>
+                      steps.move(activeIndex, overIndex)}
                   >
                     <div className="flex w-full flex-col gap-2">
                       {steps.fields.map((field, index) => (
-                        <SortableItem
-                          key={field.id}
-                          value={field.id}
-                          asChild
-                        >
+                        <SortableItem key={field.id} value={field.id} asChild>
                           <div className="grid grid-cols-[2rem_auto_2rem] items-center gap-2">
                             <SortableDragHandle
                               type="button"
@@ -278,9 +306,11 @@ function RouteComponent() {
                     variant="secondary"
                     onClick={(e) => {
                       e.preventDefault();
-                      steps.append({ text: '' })
+                      steps.append({ text: "" });
                     }}
-                  >Add</Button>
+                  >
+                    Add
+                  </Button>
                 </div>
 
                 <div className="grid justify-end">
@@ -292,14 +322,13 @@ function RouteComponent() {
                     Submit
                   </Button>
                 </div>
-
               </form>
             </Form>
           </CardContent>
         </Card>
       </div>
     </>
-  )
+  );
 }
 
 const Breadcrumbs = () => (

@@ -2,7 +2,7 @@ import { At } from "@atcute/client/lexicons";
 import { finalizeAuthorization, getSession, OAuthUserAgent } from "@atcute/oauth-browser-client";
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
 
-type AuthContextType = {
+export type AuthContextType = {
   isLoggedIn: boolean;
   agent?: OAuthUserAgent;
   logOut: () => Promise<void>;
@@ -30,6 +30,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
         localStorage.setItem("lastSignedIn", did);
         return session;
+
       } else {
         const lastSignedIn = localStorage.getItem("lastSignedIn");
 
