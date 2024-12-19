@@ -29,6 +29,7 @@ export const newIngester = () => {
           .values({
             rkey: event.commit.rkey,
             title: record.title,
+            time: record.time,
             description: record.description,
             ingredients: record.ingredients,
             steps: record.steps,
@@ -39,6 +40,7 @@ export const newIngester = () => {
             target: recipeTable.id,
             set: {
               title: record.title,
+              time: record.time,
               description: record.description,
               ingredients: record.ingredients,
               steps: record.steps,
