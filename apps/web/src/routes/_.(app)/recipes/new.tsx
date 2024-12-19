@@ -41,7 +41,6 @@ import { DragHandleDots2Icon } from "@radix-ui/react-icons";
 import { Label } from "@/components/ui/label";
 import { TrashIcon } from "lucide-react";
 import { useNewRecipeMutation } from "@/queries/recipe";
-import { useState } from "react";
 
 export const Route = createFileRoute("/_/(app)/recipes/new")({
   beforeLoad: async ({ context }) => {

@@ -13,6 +13,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { recipeQueryOptions } from '@/queries/recipe'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { useXrpc } from '@/hooks/use-xrpc'
+import { Badge } from '@/components/ui/badge'
+import { Clock, Users } from 'lucide-react'
 
 export const Route = createLazyFileRoute('/_/(app)/recipes/$author/$rkey/')({
   component: RouteComponent,
@@ -64,12 +66,31 @@ function RouteComponent() {
         </div>
       </header>
       <div className="flex flex-col gap-4 px-4 py-8 items-center max-w-2xl w-full mx-auto">
+        <div className="relative h-48 w-full">
+          <img
+            src={"https://www.foodandwine.com/thmb/fjNakOY7IcuvZac1hR3JcSo7vzI=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/FAW-recipes-pasta-sausage-basil-and-mustard-hero-06-cfd1c0a2989e474ea7e574a38182bbee.jpg"}
+            alt={recipe.title}
+            className="h-full w-full object-cover rounded-xl shadow-card"
+          />
+        </div>
+
         <p className="text-muted-foreground">
           By {recipe.author.displayName}
         </p>
         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
           {recipe.title}
         </h1>
+        <div className="flex items-center gap-4">
+          <Badge className="flex items-center gap-2">
+            <Clock className="size-4" />
+            <span>{recipe.time} mins</span>
+          </Badge>
+
+          <Badge className="flex items-center gap-2">
+            <Users className="size-4" />
+            <span>Serves 2</span>
+          </Badge>
+        </div>
         <p className="leading-7 text-center">
           {recipe.description}
         </p>
