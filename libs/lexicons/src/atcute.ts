@@ -102,6 +102,8 @@ declare module "@atcute/client/lexicons" {
        * Maximum grapheme length: 300
        */
       description?: string;
+      /** The recipe's cover image. */
+      image?: At.Blob;
       /** The amount of time (in minutes) the recipe takes to complete. */
       time?: number;
     }

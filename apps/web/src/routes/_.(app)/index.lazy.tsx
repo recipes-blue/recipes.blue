@@ -11,7 +11,7 @@ import { Separator } from '@/components/ui/separator'
 import { SidebarTrigger } from '@/components/ui/sidebar'
 import QueryPlaceholder from '@/components/query-placeholder'
 import { useRecipesQuery } from '@/queries/recipe'
-import { RecipeCard } from '@/screens/Recipes/RecipeCard'
+import { RecipeCard } from '@/components/recipe-card';
 
 export const Route = createLazyFileRoute('/_/(app)/')({
   component: RouteComponent,

@@ -46,6 +46,7 @@
         "rkey": { "type": "string" },
         "author": { "type": "ref", "ref": "blue.recipes.feed.defs#authorInfo" },
         "type": { "type": "string" },
+        "imageUrl": { "type": "string" },
         "title": { "type": "string" },
         "time": { "type": "integer" },
         "description": { "type": "string" },

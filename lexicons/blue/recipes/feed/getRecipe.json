@@ -40,6 +40,7 @@
         "title": { "type": "string" },
         "description": { "type": "string" },
         "time": { "type": "integer" },
+        "imageUrl": { "type": "string" },
         "ingredients": {
           "type": "array",
           "items": {
