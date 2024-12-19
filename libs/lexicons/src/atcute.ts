@@ -9,16 +9,16 @@
 import "@atcute/client/lexicons";
 
 declare module "@atcute/client/lexicons" {
-  namespace MoeHaydenCookwareDefs {
+  namespace BlueRecipesFeedDefs {
     interface ElapsedTime {
-      [Brand.Type]?: "moe.hayden.cookware.defs#elapsedTime";
+      [Brand.Type]?: "blue.recipes.feed.defs#elapsedTime";
       /** The amount of (#unit) to display. */
       amount: number;
       /** The unit to display the time in. */
       unit: string;
     }
     interface Ingredient {
-      [Brand.Type]?: "moe.hayden.cookware.defs#ingredient";
+      [Brand.Type]?: "blue.recipes.feed.defs#ingredient";
       /** How much of the ingredient is needed. */
       amount?: number;
       /**
@@ -35,7 +35,7 @@ declare module "@atcute/client/lexicons" {
       unit?: string;
     }
     interface Step {
-      [Brand.Type]?: "moe.hayden.cookware.defs#step";
+      [Brand.Type]?: "blue.recipes.feed.defs#step";
       /**
        * The instruction to provide to the user. \
        * Maximum string length: 5000 \
@@ -46,7 +46,7 @@ declare module "@atcute/client/lexicons" {
   }
 
   /** Gets a recipe from the index by author DID and rkey. */
-  namespace MoeHaydenCookwareGetRecipe {
+  namespace BlueRecipesFeedGetRecipe {
     interface Params {
       did: string;
       rkey: string;
@@ -56,21 +56,21 @@ declare module "@atcute/client/lexicons" {
       recipe: Result;
     }
     interface AuthorInfo {
-      [Brand.Type]?: "moe.hayden.cookware.getRecipe#authorInfo";
+      [Brand.Type]?: "blue.recipes.feed.getRecipe#authorInfo";
       handle: string;
     }
     interface Result {
-      [Brand.Type]?: "moe.hayden.cookware.getRecipe#result";
+      [Brand.Type]?: "blue.recipes.feed.getRecipe#result";
       author: AuthorInfo;
-      ingredients: MoeHaydenCookwareDefs.Ingredient[];
-      steps: MoeHaydenCookwareDefs.Step[];
+      ingredients: BlueRecipesFeedDefs.Ingredient[];
+      steps: BlueRecipesFeedDefs.Step[];
       title: string;
       description?: string;
     }
   }
 
   /** Gets recipes from the index. */
-  namespace MoeHaydenCookwareGetRecipes {
+  namespace BlueRecipesFeedGetRecipes {
     interface Params {
       cursor: string;
       did?: string;
@@ -80,7 +80,7 @@ declare module "@atcute/client/lexicons" {
       recipes: Result[];
     }
     interface Result {
-      [Brand.Type]?: "moe.hayden.cookware.getRecipes#result";
+      [Brand.Type]?: "blue.recipes.feed.getRecipes#result";
       author: string;
       did: string;
       ingredients: number;
@@ -92,12 +92,12 @@ declare module "@atcute/client/lexicons" {
     }
   }
 
-  namespace MoeHaydenCookwareRecipe {
+  namespace BlueRecipesFeedRecipe {
     /** Record containing a Cookware recipe. */
     interface Record {
-      $type: "moe.hayden.cookware.recipe";
-      ingredients: MoeHaydenCookwareDefs.Ingredient[];
-      steps: MoeHaydenCookwareDefs.Step[];
+      $type: "blue.recipes.feed.recipe";
+      ingredients: BlueRecipesFeedDefs.Ingredient[];
+      steps: BlueRecipesFeedDefs.Step[];
       /**
        * The title of the recipe. \
        * Maximum string length: 3000 \
@@ -110,22 +110,22 @@ declare module "@atcute/client/lexicons" {
        * Maximum grapheme length: 300
        */
       description?: string;
-      estimate?: MoeHaydenCookwareDefs.ElapsedTime;
+      estimate?: BlueRecipesFeedDefs.ElapsedTime;
     }
   }
 
   interface Records {
-    "moe.hayden.cookware.recipe": MoeHaydenCookwareRecipe.Record;
+    "blue.recipes.feed.recipe": BlueRecipesFeedRecipe.Record;
   }
 
   interface Queries {
-    "moe.hayden.cookware.getRecipe": {
-      params: MoeHaydenCookwareGetRecipe.Params;
-      output: MoeHaydenCookwareGetRecipe.Output;
+    "blue.recipes.feed.getRecipe": {
+      params: BlueRecipesFeedGetRecipe.Params;
+      output: BlueRecipesFeedGetRecipe.Output;
     };
-    "moe.hayden.cookware.getRecipes": {
-      params: MoeHaydenCookwareGetRecipes.Params;
-      output: MoeHaydenCookwareGetRecipes.Output;
+    "blue.recipes.feed.getRecipes": {
+      params: BlueRecipesFeedGetRecipes.Params;
+      output: BlueRecipesFeedGetRecipes.Output;
     };
   }
 
