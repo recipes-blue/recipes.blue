@@ -31,10 +31,6 @@ cookware.dev.hayden.moe {
     rewrite * /xrpc{uri}
     reverse_proxy http://host.docker.internal:8080
   }
-  handle_path /oauth/* {
-    rewrite * /oauth{uri}
-    reverse_proxy http://host.docker.internal:8080
-  }
   handle_path /api/* {
     rewrite * /api{uri}
     reverse_proxy http://host.docker.internal:8080

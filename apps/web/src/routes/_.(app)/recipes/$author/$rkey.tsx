@@ -11,18 +11,18 @@ import { Separator } from '@/components/ui/separator'
 import { SidebarTrigger } from '@/components/ui/sidebar'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { recipeQueryOptions } from '@/queries/recipe'
-import { queryClient } from '@/lib/react-query'
 import { useSuspenseQuery } from '@tanstack/react-query'
-import { rpc } from '@/hooks/use-xrpc'
+import { useXrpc } from '@/hooks/use-xrpc'
 
 export const Route = createFileRoute('/_/(app)/recipes/$author/$rkey')({
-  loader: ({ params: { author, rkey } }) => {
-    queryClient.ensureQueryData(recipeQueryOptions(rpc, author, rkey))
-  },
+  //loader: ({ params: { author, rkey } }) => {
+  //  queryClient.ensureQueryData(recipeQueryOptions(rpc, author, rkey))
+  //},
   component: RouteComponent,
 })
 
 function RouteComponent() {
+  const rpc = useXrpc();
   const { author, rkey } = Route.useParams()
   const {
     data: { recipe },

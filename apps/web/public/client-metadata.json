@@ -1,0 +1,12 @@
+{
+  "client_id": "https://recipes.blue/client-metadata.json",
+  "client_name": "pdsls",
+  "client_uri": "https://recipes.blue",
+  "redirect_uris": ["https://recipes.blue/"],
+  "scope": "atproto transition:generic",
+  "grant_types": ["authorization_code", "refresh_token"],
+  "response_types": ["code"],
+  "token_endpoint_auth_method": "none",
+  "application_type": "web",
+  "dpop_bound_access_tokens": true
+}

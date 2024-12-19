@@ -17,7 +17,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { SidebarTrigger } from '@/components/ui/sidebar'
-import { SERVER_URL } from '@/lib/utils'
+import { sleep } from '@/lib/utils'
+import { createAuthorizationUrl, resolveFromIdentity } from '@atcute/oauth-browser-client'
 import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
@@ -32,19 +33,28 @@ function RouteComponent() {
   const { mutate, isPending, error } = useMutation({
     mutationKey: ['login'],
     mutationFn: async () => {
-      const res = await fetch(`https://${SERVER_URL}/oauth/login`, {
-        method: 'POST',
-        body: JSON.stringify({ actor: handle }),
-        redirect: 'manual',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-      })
-      return res.json()
+      const { identity, metadata } = await resolveFromIdentity(handle);
+
+      const authUrl = await createAuthorizationUrl({
+        metadata: metadata,
+        identity: identity,
+        scope: 'atproto transition:generic',
+      });
+
+      await sleep(200);
+
+      return authUrl;
     },
-    onSuccess: (resp: { url: string }) => {
-      document.location.href = resp.url
+    onSuccess: async (authUrl: URL) => {
+      window.location.assign(authUrl);
+
+      await new Promise((_resolve, reject) => {
+        const listener = () => {
+          reject(new Error(`user aborted the login request`));
+        };
+
+        window.addEventListener('pageshow', listener, { once: true });
+      });
     },
   })
 

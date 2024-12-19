@@ -1,13 +1,13 @@
 import { SERVER_URL } from "@/lib/utils";
 import { CredentialManager, XRPC } from "@atcute/client"
-import { createContext, useContext } from "react";
+import { OAuthUserAgent } from "@atcute/oauth-browser-client";
 
-export const creds = new CredentialManager({ service: `https://${SERVER_URL}` });
-export const rpc = new XRPC({ handler: creds });
-export const XrpcContext = createContext<{ rpc: XRPC; creds: CredentialManager; } | null>(null);
+export function useXrpc(agent?: OAuthUserAgent) {
+  let handler;
+  if (agent) handler = agent;
+  else handler = new CredentialManager({ service: `https://${SERVER_URL}` });
 
-export function useXrpc() {
-  const xrpc = useContext(XrpcContext);
-  if (!xrpc) throw new Error('useXrpc() must be used within <XrpcContext.Provider>!');
-  return xrpc;
+  const rpc = new XRPC({ handler });
+
+  return rpc;
 }
