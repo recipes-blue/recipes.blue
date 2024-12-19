@@ -56,6 +56,7 @@ declare module "@atcute/client/lexicons" {
       steps: BlueRecipesFeedDefs.Step[];
       title: string;
       description?: string;
+      imageUrl?: string;
       time?: number;
     }
   }
@@ -80,6 +81,7 @@ declare module "@atcute/client/lexicons" {
       time: number;
       title: string;
       description?: string;
+      imageUrl?: string;
       type?: string;
     }
   }
