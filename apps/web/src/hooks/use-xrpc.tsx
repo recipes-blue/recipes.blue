@@ -15,6 +15,6 @@ export function useXrpc() {
     });
   }
 
-  const creds = new CredentialManager({ service: `http://${SERVER_URL}` });
+  const creds = new CredentialManager({ service: `https://${SERVER_URL}` });
   return new XRPC({ handler: creds });
 }
