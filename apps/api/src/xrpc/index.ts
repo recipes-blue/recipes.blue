@@ -116,11 +116,3 @@ xrpcApp.get('/blue.recipes.feed.getRecipe', async ctx => {
     },
   });
 });
-
-xrpcApp.use(async c => {
-  c.status(400);
-  return c.json({
-    error: 'not_implemented',
-    message: 'The XRPC server has not yet been implemented.',
-  });
-});
