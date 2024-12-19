@@ -52,7 +52,9 @@ xrpcApp.get('/blue.recipes.feed.getRecipes', async ctx => {
     description: r.description || undefined,
     ingredients: r.ingredientsCount as number,
     steps: r.stepsCount as number,
-    imageUrl: `https://cdn.bsky.app/img/feed_thumbnail/plain/${r.authorDid}/${r.imageRef}@jpeg`,
+    imageUrl: r.imageRef
+      ? `https://cdn.bsky.app/img/feed_thumbnail/plain/${r.authorDid}/${r.imageRef}@jpeg`
+      : null,
   });
 
   for (const result of recipes) {
@@ -112,7 +114,9 @@ xrpcApp.get('/blue.recipes.feed.getRecipe', async ctx => {
       description: recipe.description,
       ingredients: recipe.ingredients,
       steps: recipe.steps,
-      imageUrl: `https://cdn.bsky.app/img/feed_thumbnail/plain/${recipe.authorDid}/${recipe.imageRef}@jpeg`,
+      imageUrl: recipe.imageRef
+        ? `https://cdn.bsky.app/img/feed_thumbnail/plain/${recipe.authorDid}/${recipe.imageRef}@jpeg`
+        : null,
     },
   });
 });
