@@ -20,9 +20,7 @@ const app = new Hono();
 app.use(cors({
   origin: (origin, _ctx) => {
     if (env.ENV == 'development') {
-      const host = _ctx.req.header('Host');
-      console.log(`https://${host}`);
-      return `https://${host}`;
+      return origin;
     }
     return env.CORS_ORIGINS.includes(origin)
       ? origin

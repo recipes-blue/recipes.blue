@@ -22,9 +22,9 @@
             "maxGraphemes": 300,
             "description": "The description of the recipe."
           },
-          "estimate": {
-            "type": "ref",
-            "ref": "blue.recipes.feed.defs#elapsedTime"
+          "time": {
+            "type": "integer",
+            "description": "The amount of time (in minutes) the recipe takes to complete."
           },
           "ingredients": {
             "type": "array",

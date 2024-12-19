@@ -2,6 +2,10 @@ import { Hono } from 'hono';
 import { db, recipeTable } from '@cookware/database';
 import { and, desc, eq, sql } from 'drizzle-orm';
 import { DID, getDidDoc, getDidFromHandleOrDid } from '@cookware/lexicons';
+import { simpleFetchHandler, XRPC } from '@atcute/client';
+import { AppBskyActorProfile } from '@atproto/api';
+import { BlueRecipesFeedDefs, BlueRecipesFeedGetRecipes } from '@atcute/client/lexicons';
+import { getAuthorInfo } from '../util/api.js';
 
 export const xrpcApp = new Hono();
 
@@ -27,27 +31,38 @@ xrpcApp.get('/blue.recipes.feed.getRecipes', async ctx => {
     .where(did ? eq(recipeTable.authorDid, did) : undefined)
     .orderBy(desc(recipeTable.createdAt));
 
+  const rpc = new XRPC({
+    handler: simpleFetchHandler({
+      service: 'https://public.api.bsky.app',
+    }),
+  })
+
+  let authorInfo: BlueRecipesFeedDefs.AuthorInfo | null = null;
+  if (did) {
+    authorInfo = await getAuthorInfo(did, rpc);
+  };
+
   const results = [];
   const eachRecipe = async (r: typeof recipes[0]) => ({
-    author: await (async () => {
-      const author = await getDidDoc(r.authorDid);
-      return author.alsoKnownAs[0]?.substring(5);
-    })(),
+    author: authorInfo || await getAuthorInfo(r.authorDid, rpc),
     rkey: r.rkey,
-    did: r.authorDid,
     title: r.title,
-    description: r.description,
-    ingredients: r.ingredientsCount,
-    steps: r.stepsCount ,
+    time: 5,
+    description: r.description || undefined,
+    ingredients: r.ingredientsCount as number,
+    steps: r.stepsCount as number,
   });
 
   for (const result of recipes) {
     results.push(await eachRecipe(result));
   }
 
-  return ctx.json({
+  let result: BlueRecipesFeedGetRecipes.Output = {
+    author: authorInfo || undefined,
     recipes: results,
-  });
+  };
+
+  return ctx.json(result);
 });
 
 xrpcApp.get('/blue.recipes.feed.getRecipe', async ctx => {

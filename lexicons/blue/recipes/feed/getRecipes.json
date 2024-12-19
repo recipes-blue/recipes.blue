@@ -24,6 +24,10 @@
           "type": "object",
           "required": ["recipes"],
           "properties": {
+            "author": {
+              "type": "ref",
+              "ref": "blue.recipes.feed.defs#authorInfo"
+            },
             "recipes": {
               "type": "array",
               "items": {
@@ -37,13 +41,13 @@
     },
     "result": {
       "type": "object",
-      "required": [ "author", "rkey", "did", "title", "ingredients", "steps"],
+      "required": [ "rkey", "author", "title", "time", "ingredients", "steps"],
       "properties": {
-        "author": { "type": "string" },
         "rkey": { "type": "string" },
+        "author": { "type": "ref", "ref": "blue.recipes.feed.defs#authorInfo" },
         "type": { "type": "string" },
-        "did": { "type": "string" },
         "title": { "type": "string" },
+        "time": { "type": "integer" },
         "description": { "type": "string" },
         "ingredients": { "type": "integer" },
         "steps": { "type": "integer" }

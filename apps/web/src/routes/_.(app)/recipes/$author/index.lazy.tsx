@@ -12,6 +12,7 @@ import { SidebarTrigger } from '@/components/ui/sidebar'
 import QueryPlaceholder from '@/components/query-placeholder'
 import { useRecipesQuery } from '@/queries/recipe'
 import { RecipeCard } from '@/screens/Recipes/RecipeCard'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 export const Route = createLazyFileRoute('/_/(app)/recipes/$author/')({
   component: RouteComponent,
@@ -49,7 +50,11 @@ function RouteComponent() {
         </div>
       </header>
       <div className="flex flex-col gap-4 p-4 pt-6 items-center">
-        <h1 className="text-4xl font-black">{author}'s recipes!</h1>
+        <Avatar className="h-24 w-24 rounded-lg">
+          <AvatarImage src={query.data?.author?.avatarUrl} alt={query.data?.author?.displayName} />
+          <AvatarFallback className="rounded-lg">{query.data?.author?.displayName}</AvatarFallback>
+        </Avatar>
+        <h1 className="text-4xl font-black">{query.data?.author?.displayName}'s recipes!</h1>
         <p className="text-lg">See what they've been cooking.</p>
       </div>
       <div className="flex-1 flex flex-col items-center p-4">
@@ -57,13 +62,7 @@ function RouteComponent() {
           <QueryPlaceholder query={query} cards cardsCount={12}>
             {query.data?.recipes.map((recipe, idx) => (
               <RecipeCard
-                title={recipe.title}
-                description={recipe.description}
-                rkey={recipe.rkey}
-                author={recipe.author}
-                time={{ amount: 30, unit: 'min' }}
-                steps={recipe.steps}
-                ingredients={recipe.ingredients}
+                recipe={recipe}
                 key={idx}
               />
             ))}

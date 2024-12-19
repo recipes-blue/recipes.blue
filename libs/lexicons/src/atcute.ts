@@ -10,29 +10,23 @@ import "@atcute/client/lexicons";
 
 declare module "@atcute/client/lexicons" {
   namespace BlueRecipesFeedDefs {
-    interface ElapsedTime {
-      [Brand.Type]?: "blue.recipes.feed.defs#elapsedTime";
-      /** The amount of (#unit) to display. */
-      amount: number;
-      /** The unit to display the time in. */
-      unit: string;
+    interface AuthorInfo {
+      [Brand.Type]?: "blue.recipes.feed.defs#authorInfo";
+      did: string;
+      handle: string;
+      avatarUrl?: string;
+      displayName?: string;
     }
     interface Ingredient {
       [Brand.Type]?: "blue.recipes.feed.defs#ingredient";
       /** How much of the ingredient is needed. */
-      amount?: number;
+      amount?: string;
       /**
        * The name of the ingredient. \
        * Maximum string length: 3000 \
        * Maximum grapheme length: 300
        */
       name?: string;
-      /**
-       * The unit the ingredient is measured in. \
-       * Maximum string length: 3000 \
-       * Maximum grapheme length: 300
-       */
-      unit?: string;
     }
     interface Step {
       [Brand.Type]?: "blue.recipes.feed.defs#step";
@@ -55,17 +49,14 @@ declare module "@atcute/client/lexicons" {
     interface Output {
       recipe: Result;
     }
-    interface AuthorInfo {
-      [Brand.Type]?: "blue.recipes.feed.getRecipe#authorInfo";
-      handle: string;
-    }
     interface Result {
       [Brand.Type]?: "blue.recipes.feed.getRecipe#result";
-      author: AuthorInfo;
+      author: BlueRecipesFeedDefs.AuthorInfo;
       ingredients: BlueRecipesFeedDefs.Ingredient[];
       steps: BlueRecipesFeedDefs.Step[];
       title: string;
       description?: string;
+      time?: number;
     }
   }
 
@@ -78,14 +69,15 @@ declare module "@atcute/client/lexicons" {
     type Input = undefined;
     interface Output {
       recipes: Result[];
+      author?: BlueRecipesFeedDefs.AuthorInfo;
     }
     interface Result {
       [Brand.Type]?: "blue.recipes.feed.getRecipes#result";
-      author: string;
-      did: string;
+      author: BlueRecipesFeedDefs.AuthorInfo;
       ingredients: number;
       rkey: string;
       steps: number;
+      time: number;
       title: string;
       description?: string;
       type?: string;
@@ -110,7 +102,8 @@ declare module "@atcute/client/lexicons" {
        * Maximum grapheme length: 300
        */
       description?: string;
-      estimate?: BlueRecipesFeedDefs.ElapsedTime;
+      /** The amount of time (in minutes) the recipe takes to complete. */
+      time?: number;
     }
   }
 

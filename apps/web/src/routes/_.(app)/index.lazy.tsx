@@ -50,13 +50,7 @@ function RouteComponent() {
           <QueryPlaceholder query={query} cards cardsCount={12}>
             {query.data?.recipes.map((recipe, idx) => (
               <RecipeCard
-                title={recipe.title}
-                description={recipe.description}
-                rkey={recipe.rkey}
-                author={recipe.author}
-                time={{ amount: 30, unit: 'min' }}
-                steps={recipe.steps}
-                ingredients={recipe.ingredients}
+                recipe={recipe}
                 key={idx}
               />
             ))}

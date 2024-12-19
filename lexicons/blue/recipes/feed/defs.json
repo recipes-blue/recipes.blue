@@ -12,14 +12,8 @@
           "description": "The name of the ingredient."
         },
         "amount": {
-          "type": "integer",
-          "description": "How much of the ingredient is needed."
-        },
-        "unit": {
           "type": "string",
-          "maxLength": 3000,
-          "maxGraphemes": 300,
-          "description": "The unit the ingredient is measured in."
+          "description": "How much of the ingredient is needed."
         }
       }
     },
@@ -35,18 +29,14 @@
         }
       }
     },
-    "elapsedTime": {
+    "authorInfo": {
       "type": "object",
-      "required": ["amount", "unit"],
+      "required": ["did", "handle"],
       "properties": {
-        "amount": {
-          "type": "integer",
-          "description": "The amount of (#unit) to display."
-        },
-        "unit": {
-          "type": "string",
-          "description": "The unit to display the time in."
-        }
+        "did": { "type": "string" },
+        "handle": { "type": "string" },
+        "displayName": { "type": "string" },
+        "avatarUrl": { "type": "string" }
       }
     }
   }

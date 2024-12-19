@@ -36,12 +36,10 @@
       "type": "object",
       "required": ["author", "title", "ingredients", "steps"],
       "properties": {
-        "author": {
-          "type": "ref",
-          "ref": "#authorInfo"
-        },
+        "author": { "type": "ref", "ref": "blue.recipes.feed.defs#authorInfo" },
         "title": { "type": "string" },
         "description": { "type": "string" },
+        "time": { "type": "integer" },
         "ingredients": {
           "type": "array",
           "items": {
@@ -56,13 +54,6 @@
             "ref": "blue.recipes.feed.defs#step"
           }
         }
-      }
-    },
-    "authorInfo": {
-      "type": "object",
-      "required": ["handle"],
-      "properties": {
-        "handle": { "type": "string" }
       }
     }
   }
