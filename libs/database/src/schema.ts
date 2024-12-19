@@ -1,4 +1,3 @@
-import { sql } from "drizzle-orm";
 import { customType, int, sqliteTable, text, unique } from "drizzle-orm/sqlite-core";
 import { DID } from "@cookware/lexicons";
 import { Ingredient, Step } from "@cookware/lexicons";
