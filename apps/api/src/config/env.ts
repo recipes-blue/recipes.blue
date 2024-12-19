@@ -9,7 +9,7 @@ const envSchema = z.object({
   CORS_ORIGINS: z
     .string()
     .transform((arg) => arg.split(','))
-    .default('http://localhost:5173,https://cookware.dev.hayden.moe'),
+    .default('http://127.0.0.1:5173,https://cookware.dev.hayden.moe'),
 
   PLC_DIRECTORY_URL: z.string().url().default('https://plc.directory'),
 
