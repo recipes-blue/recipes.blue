@@ -3,7 +3,7 @@ import { useAuth } from "@/state/auth";
 import { XRPC, XRPCError } from "@atcute/client";
 import { Recipe, RecipeCollection } from "@cookware/lexicons";
 import { queryOptions, useMutation, useQuery } from "@tanstack/react-query";
-import { notFound, useLocation, useRouter } from "@tanstack/react-router";
+import { notFound } from "@tanstack/react-router";
 import { UseFormReturn } from "react-hook-form";
 import { TID } from '@atproto/common-web';
 

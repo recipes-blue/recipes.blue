@@ -1,14 +1,12 @@
 "use client"
 
 import {
-  BadgeCheck,
   ChevronsUpDown,
   LogOut,
 } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
