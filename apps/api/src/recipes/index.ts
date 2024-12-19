@@ -12,20 +12,15 @@ recipeApp.post('/', async ctx => {
     throw new XRPCError('this endpoint requires authentication', 'authz_required', 401);
   }
 
-  try {
-    const serviceJwt = await verifyJwt(
-      authz.split(' ')[1]!,
-      'did:web:recipes.blue#api',
-      null,
-      async (iss, forceRefresh) => {
-        console.log(iss);
-        return '';
-      },
-    );
-  } catch(e) {
-    if (e instanceof XRPCError) return e.hono(ctx);
-    throw e;
-  }
+  const serviceJwt = await verifyJwt(
+    authz.split(' ')[1]!,
+    'did:web:recipes.blue#api',
+    null,
+    async (iss, forceRefresh) => {
+      console.log(iss);
+      return '';
+    },
+  );
 
   //const agent = await getSessionAgent(ctx);
   //if (!agent) {

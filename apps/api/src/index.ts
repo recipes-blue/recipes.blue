@@ -7,6 +7,7 @@ import { cors } from "hono/cors";
 import { ZodError } from "zod";
 import * as Sentry from "@sentry/node"
 import { recipeApp } from "./recipes/index.js";
+import { XRPCError } from "./util/xrpc.js";
 
 if (env.SENTRY_DSN) {
   Sentry.init({
@@ -47,6 +48,8 @@ app.use(async (ctx, next) => {
         error: 'invalid_data',
         message: e.message,
       });
+    } else if (e instanceof XRPCError) {
+      return e.hono(ctx);
     }
 
     ctx.status(500);
