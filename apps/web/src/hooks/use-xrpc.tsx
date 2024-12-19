@@ -9,8 +9,8 @@ export function useXrpc() {
     return new XRPC({
       handler: agent,
       proxy: {
-        type: 'atproto_pds',
-        service: `did:web:${SERVER_URL}#api`,
+        type: 'api',
+        service: `did:web:${SERVER_URL}`,
       },
     });
   }
