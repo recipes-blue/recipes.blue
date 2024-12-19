@@ -1,11 +1,11 @@
 import { useXrpc } from "@/hooks/use-xrpc";
-import { SERVER_URL } from "@/lib/utils";
+import { useAuth } from "@/state/auth";
 import { XRPC, XRPCError } from "@atcute/client";
-import { Recipe } from "@cookware/lexicons";
+import { Recipe, RecipeCollection } from "@cookware/lexicons";
 import { queryOptions, useMutation, useQuery } from "@tanstack/react-query";
-import { notFound } from "@tanstack/react-router";
-import axios from "axios";
+import { notFound, useLocation, useRouter } from "@tanstack/react-router";
 import { UseFormReturn } from "react-hook-form";
+import { TID } from '@atproto/common-web';
 
 const RQKEY_ROOT = 'posts';
 export const RQKEY = (cursor: string, did: string, rkey: string) => [RQKEY_ROOT, cursor, did, rkey];
@@ -48,15 +48,30 @@ export const useRecipeQuery = (did: string, rkey: string) => {
 };
 
 export const useNewRecipeMutation = (form: UseFormReturn<Recipe>) => {
+  const { agent } = useAuth();
+  const rpc = useXrpc();
   return useMutation({
     mutationKey: ['recipes.new'],
     mutationFn: async ({ recipe }: { recipe: Recipe }) => {
-      const res = await axios.post(`https://${SERVER_URL}/api/recipes`, recipe);
-      return res.data;
+      const rkey = TID.nextStr();
+      const res = await rpc.call(`com.atproto.repo.createRecord`, {
+        data: {
+          repo: agent?.session.info.sub as `did:${string}`,
+          record: recipe,
+          collection: RecipeCollection,
+          rkey: rkey,
+        },
+      });
+      return {
+        rkey: rkey,
+        resp: res.data
+      };
     },
     onError: (error) => {
-      console.error(error);
       form.setError('title', error);
+    },
+    onSuccess: ({ rkey }) => {
+      window.location.assign(`/recipes/${agent?.sub}/${rkey}`);
     },
   });
 };

@@ -17,6 +17,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { NavUserOpts } from "./nav-user-opts"
 
 const data = {
   navMain: [
@@ -76,6 +77,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
+        <NavUserOpts />
       </SidebarContent>
       <SidebarFooter>
         <NavUser />
