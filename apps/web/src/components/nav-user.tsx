@@ -27,7 +27,7 @@ import { useUserQuery } from "@/queries/self"
 
 export function NavUser() {
   const { isMobile } = useSidebar()
-  const { isLoggedIn, agent } = useAuth();
+  const { isLoggedIn, agent, logOut } = useAuth();
 
   const userQuery = useUserQuery();
 
@@ -101,7 +101,7 @@ export function NavUser() {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="cursor-pointer" onClick={() => agent.signOut()}>
+            <DropdownMenuItem className="cursor-pointer" onClick={() => logOut()}>
               <LogOut />
               Log out
             </DropdownMenuItem>

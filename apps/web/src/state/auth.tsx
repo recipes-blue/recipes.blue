@@ -5,10 +5,12 @@ import { createContext, PropsWithChildren, useContext, useEffect, useState } fro
 type AuthContextType = {
   isLoggedIn: boolean;
   agent?: OAuthUserAgent;
+  logOut: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType>({
   isLoggedIn: false,
+  logOut: async () => {},
 });
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
@@ -57,7 +59,14 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   if (!isReady) return null;
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, agent }}>
+    <AuthContext.Provider value={{
+      isLoggedIn,
+      agent,
+      logOut: async () => {
+        setIsLoggedIn(false);
+        await agent?.signOut();
+      },
+    }}>
       {children}
     </AuthContext.Provider>
   );
