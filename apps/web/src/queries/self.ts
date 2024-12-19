@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export const useUserQuery = () => {
   const { isLoggedIn, agent } = useAuth();
-  const rpc = useXrpc(agent);
+  const rpc = useXrpc();
 
   return useQuery({
     queryKey: ['self'],
