@@ -18,13 +18,15 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
     <Link to="/recipes/$author/$rkey" params={{ author: recipe.author.handle, rkey: recipe.rkey }} className="w-full">
       <Card className="overflow-hidden">
         <CardHeader className="p-0">
-          <div className="relative h-48 w-full">
-            <img
-              src={"https://www.foodandwine.com/thmb/fjNakOY7IcuvZac1hR3JcSo7vzI=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/FAW-recipes-pasta-sausage-basil-and-mustard-hero-06-cfd1c0a2989e474ea7e574a38182bbee.jpg"}
-              alt={recipe.title}
-              className="h-full w-full object-cover"
-            />
-          </div>
+          { recipe.imageUrl &&
+            <div className="relative h-48 w-full">
+              <img
+                src={recipe.imageUrl}
+                alt={recipe.title}
+                className="h-full w-full object-cover"
+              />
+            </div>
+          }
         </CardHeader>
         <CardContent className="p-4">
           <h3 className="text-lg font-semibold mb-2">{recipe.title}</h3>

@@ -77,11 +77,14 @@ function RouteComponent() {
           </CardHeader>
 
           <CardContent className="space-y-6">
-            <img
-              src={"https://www.foodandwine.com/thmb/fjNakOY7IcuvZac1hR3JcSo7vzI=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/FAW-recipes-pasta-sausage-basil-and-mustard-hero-06-cfd1c0a2989e474ea7e574a38182bbee.jpg"}
-              alt={recipe.title}
-              className="h-64 w-full object-cover rounded-md"
-            />
+            {
+              recipe.imageUrl &&
+              <img
+                src={recipe.imageUrl}
+                alt={recipe.title}
+                className="h-64 w-full object-cover rounded-md"
+              />
+            }
             <div className="flex flex-wrap gap-4">
               <Badge variant="secondary" className="flex items-center gap-2">
                 <Clock className="size-4" />
