@@ -51,7 +51,7 @@ function RouteComponent() {
               <BreadcrumbItem className="hidden md:block">
                 <BreadcrumbLink asChild>
                   <Link to="/recipes/$author" params={{ author: recipe.author.handle }}>
-                    {recipe.author.handle}
+                    {recipe.author.displayName}
                   </Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
@@ -65,7 +65,7 @@ function RouteComponent() {
       </header>
       <div className="flex flex-col gap-4 px-4 py-8 items-center max-w-2xl w-full mx-auto">
         <p className="text-muted-foreground">
-          By @{recipe.author.handle}
+          By {recipe.author.displayName}
         </p>
         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
           {recipe.title}
@@ -81,10 +81,10 @@ function RouteComponent() {
               <CardTitle>Ingredients</CardTitle>
             </CardHeader>
             <CardContent>
-              <ul className="list-disc flex flex-col ml-4">
+              <ul className="flex flex-col">
                 {recipe.ingredients.map((ing, idx) => (
                   <li key={idx}>
-                    {ing.name} ({ing.amount} {ing.unit})
+                    <b>{ing.amount}</b> {ing.name}
                   </li>
                 ))}
               </ul>

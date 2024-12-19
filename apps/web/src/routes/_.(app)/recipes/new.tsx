@@ -56,13 +56,7 @@ export const Route = createFileRoute("/_/(app)/recipes/new")({
   component: RouteComponent,
 });
 
-const schema = RecipeRecord.extend({
-  ingredients: z.array(
-    IngredientObject.extend({
-      amount: z.coerce.number().nullable(),
-    }),
-  ),
-});
+const schema = RecipeRecord;
 
 function RouteComponent() {
   const form = useForm<z.infer<typeof schema>>({
@@ -136,6 +130,27 @@ function RouteComponent() {
                           {...field}
                         />
                       </FormControl>
+                      <FormDescription>Describe your recipe, maybe tell the world how tasty it is? (Optional)</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  name="time"
+                  control={form.control}
+                  render={({ field: { value, ...field } }) => (
+                    <FormItem>
+                      <FormLabel>Time</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          className="resize-none"
+                          value={value || ""}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>How long (in minutes) does your recipe take to complete?</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -151,7 +166,7 @@ function RouteComponent() {
                     <div className="flex w-full flex-col gap-2">
                       {ingredients.fields.map((field, index) => (
                         <SortableItem key={field.id} value={field.id} asChild>
-                          <div className="grid grid-cols-[2rem_1fr_0.2fr_0.2fr_2rem] items-center gap-2">
+                          <div className="grid grid-cols-[2rem_0.3fr_1fr_2rem] items-center gap-2">
                             <SortableDragHandle
                               type="button"
                               variant="outline"
@@ -166,6 +181,24 @@ function RouteComponent() {
 
                             <FormField
                               control={form.control}
+                              name={`ingredients.${index}.amount`}
+                              render={({ field: { value, ...field } }) => (
+                                <FormItem>
+                                  <FormControl>
+                                    <Input
+                                      placeholder="Amount"
+                                      value={value || ""}
+                                      className="h-8"
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+
+                            <FormField
+                              control={form.control}
                               name={`ingredients.${index}.name`}
                               render={({ field }) => (
                                 <FormItem>
@@ -173,43 +206,6 @@ function RouteComponent() {
                                     <Input
                                       placeholder="Ingredient"
                                       className="h-8"
-                                      {...field}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-
-                            <FormField
-                              control={form.control}
-                              name={`ingredients.${index}.amount`}
-                              render={({ field: { value, ...field } }) => (
-                                <FormItem>
-                                  <FormControl>
-                                    <Input
-                                      type="number"
-                                      placeholder="#"
-                                      value={value || "0"}
-                                      className="h-8"
-                                      {...field}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-
-                            <FormField
-                              control={form.control}
-                              name={`ingredients.${index}.unit`}
-                              render={({ field: { value, ...field } }) => (
-                                <FormItem>
-                                  <FormControl>
-                                    <Input
-                                      placeholder="Unit"
-                                      className="h-8"
-                                      value={value || ""}
                                       {...field}
                                     />
                                   </FormControl>

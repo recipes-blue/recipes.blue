@@ -35,7 +35,7 @@ xrpcApp.get('/blue.recipes.feed.getRecipes', async ctx => {
     handler: simpleFetchHandler({
       service: 'https://public.api.bsky.app',
     }),
-  })
+  });
 
   let authorInfo: BlueRecipesFeedDefs.AuthorInfo | null = null;
   if (did) {
@@ -94,14 +94,19 @@ xrpcApp.get('/blue.recipes.feed.getRecipe', async ctx => {
     });
   }
 
-  const author = await getDidDoc(recipe.authorDid);
+  const rpc = new XRPC({
+    handler: simpleFetchHandler({
+      service: 'https://public.api.bsky.app',
+    }),
+  });
+
+  const authorInfo = await getAuthorInfo(recipe.authorDid, rpc);
 
   return ctx.json({
     recipe: {
-      author: {
-        handle: author.alsoKnownAs[0]?.substring(5),
-      },
+      author: authorInfo,
       title: recipe.title,
+      time: 5,
       description: recipe.description,
       ingredients: recipe.ingredients,
       steps: recipe.steps,

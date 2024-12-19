@@ -1,9 +1,8 @@
 import { z } from 'zod';
 
 export const IngredientObject = z.object({
+  amount: z.string().nullable(),
   name: z.string().max(3000, 'Ingredient names must be under 3000 characters.'),
-  amount: z.number().nullable(),
-  unit: z.string().max(3000, 'Ingredient units must be under 3000 characters.').nullable(),
 });
 
 export type Ingredient = z.infer<typeof IngredientObject>;
