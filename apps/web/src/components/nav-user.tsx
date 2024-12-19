@@ -97,6 +97,9 @@ export function NavUser() {
                   <AvatarImage src={`https://cdn.bsky.app/img/avatar_thumbnail/plain/${agent.sub}/${userQuery.data.avatar?.ref.$link}@jpeg`} alt={userQuery.data.displayName} />
                   <AvatarFallback className="rounded-lg">{userQuery.data.displayName}</AvatarFallback>
                 </Avatar>
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-semibold">{userQuery.data.displayName}</span>
+                </div>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
