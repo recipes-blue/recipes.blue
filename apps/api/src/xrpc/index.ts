@@ -1,9 +1,8 @@
 import { Hono } from 'hono';
 import { db, recipeTable } from '@cookware/database';
 import { and, desc, eq, sql } from 'drizzle-orm';
-import { DID, getDidDoc, getDidFromHandleOrDid } from '@cookware/lexicons';
+import { DID, getDidFromHandleOrDid } from '@cookware/lexicons';
 import { simpleFetchHandler, XRPC } from '@atcute/client';
-import { AppBskyActorProfile } from '@atproto/api';
 import { BlueRecipesFeedDefs, BlueRecipesFeedGetRecipes } from '@atcute/client/lexicons';
 import { getAuthorInfo } from '../util/api.js';
 
@@ -26,6 +25,7 @@ xrpcApp.get('/blue.recipes.feed.getRecipes', async ctx => {
       stepsCount: sql`json_array_length(${recipeTable.steps})`,
       createdAt: recipeTable.createdAt,
       authorDid: recipeTable.authorDid,
+      imageRef: recipeTable.imageRef,
       uri: sql`concat(${recipeTable.authorDid}, "/", ${recipeTable.rkey})`.as('uri'),
     })
     .from(recipeTable)
@@ -52,6 +52,7 @@ xrpcApp.get('/blue.recipes.feed.getRecipes', async ctx => {
     description: r.description || undefined,
     ingredients: r.ingredientsCount as number,
     steps: r.stepsCount as number,
+    imageUrl: `https://cdn.bsky.app/img/feed_thumbnail/plain/${r.authorDid}/${r.imageRef}@jpeg`,
   });
 
   for (const result of recipes) {
@@ -111,6 +112,7 @@ xrpcApp.get('/blue.recipes.feed.getRecipe', async ctx => {
       description: recipe.description,
       ingredients: recipe.ingredients,
       steps: recipe.steps,
+      imageUrl: `https://cdn.bsky.app/img/feed_thumbnail/plain/${recipe.authorDid}/${recipe.imageRef}@jpeg`,
     },
   });
 });
