@@ -22,6 +22,13 @@
       "when": 1734642833768,
       "tag": "0002_redundant_wither",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1734643156502,
+      "tag": "0003_fixed_peter_parker",
+      "breakpoints": true
     }
   ]
 }
