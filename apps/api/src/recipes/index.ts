@@ -22,6 +22,9 @@ recipeApp.post('/', async ctx => {
         return '';
       },
     );
+  } catch(e) {
+    if (e instanceof XRPCError) return e.hono(ctx);
+    throw e;
   }
 
   //const agent = await getSessionAgent(ctx);
