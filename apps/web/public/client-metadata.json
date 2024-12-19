@@ -1,6 +1,6 @@
 {
   "client_id": "https://recipes.blue/client-metadata.json",
-  "client_name": "pdsls",
+  "client_name": "Recipes",
   "client_uri": "https://recipes.blue",
   "redirect_uris": ["https://recipes.blue/"],
   "scope": "atproto transition:generic",
