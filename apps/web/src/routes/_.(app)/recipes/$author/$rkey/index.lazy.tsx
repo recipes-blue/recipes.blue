@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createLazyFileRoute, Link } from '@tanstack/react-router'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -14,10 +14,7 @@ import { recipeQueryOptions } from '@/queries/recipe'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { useXrpc } from '@/hooks/use-xrpc'
 
-export const Route = createFileRoute('/_/(app)/recipes/$author/$rkey')({
-  //loader: ({ params: { author, rkey } }) => {
-  //  queryClient.ensureQueryData(recipeQueryOptions(rpc, author, rkey))
-  //},
+export const Route = createLazyFileRoute('/_/(app)/recipes/$author/$rkey/')({
   component: RouteComponent,
 })
 
