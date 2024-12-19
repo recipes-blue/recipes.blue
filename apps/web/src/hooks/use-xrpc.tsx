@@ -1,13 +1,20 @@
 import { SERVER_URL } from "@/lib/utils";
+import { useAuth } from "@/state/auth";
 import { CredentialManager, XRPC } from "@atcute/client"
-import { OAuthUserAgent } from "@atcute/oauth-browser-client";
 
-export function useXrpc(agent?: OAuthUserAgent) {
-  let handler;
-  if (agent) handler = agent;
-  else handler = new CredentialManager({ service: `https://${SERVER_URL}` });
+export function useXrpc() {
+  const { agent } = useAuth();
 
-  const rpc = new XRPC({ handler });
+  if (agent) {  
+    return new XRPC({
+      handler: agent,
+      proxy: {
+        type: 'atproto_pds',
+        service: `did:web:${SERVER_URL}#api`,
+      },
+    });
+  }
 
-  return rpc;
+  const creds = new CredentialManager({ service: `https://${SERVER_URL}` });
+  return new XRPC({ handler: creds });
 }
