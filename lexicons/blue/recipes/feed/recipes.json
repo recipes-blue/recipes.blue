@@ -1,6 +1,6 @@
 {
   "lexicon": 1,
-  "id": "moe.hayden.cookware.recipe",
+  "id": "blue.recipes.feed.recipe",
   "defs": {
     "main": {
       "type": "record",
@@ -24,20 +24,20 @@
           },
           "estimate": {
             "type": "ref",
-            "ref": "moe.hayden.cookware.defs#elapsedTime"
+            "ref": "blue.recipes.feed.defs#elapsedTime"
           },
           "ingredients": {
             "type": "array",
             "items": {
               "type": "ref",
-              "ref": "moe.hayden.cookware.defs#ingredient"
+              "ref": "blue.recipes.feed.defs#ingredient"
             }
           },
           "steps": {
             "type": "array",
             "items": {
               "type": "ref",
-              "ref": "moe.hayden.cookware.defs#step"
+              "ref": "blue.recipes.feed.defs#step"
             }
           }
         }

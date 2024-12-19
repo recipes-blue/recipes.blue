@@ -1,6 +1,6 @@
 {
   "lexicon": 1,
-  "id": "moe.hayden.cookware.getRecipes",
+  "id": "blue.recipes.feed.getRecipes",
   "defs": {
     "main": {
       "type": "query",

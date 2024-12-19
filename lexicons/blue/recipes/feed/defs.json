@@ -1,6 +1,6 @@
 {
   "lexicon": 1,
-  "id": "moe.hayden.cookware.defs",
+  "id": "blue.recipes.feed.defs",
   "defs": {
     "ingredient": {
       "type": "object",

@@ -1,6 +1,6 @@
 {
   "lexicon": 1,
-  "id": "moe.hayden.cookware.getRecipe",
+  "id": "blue.recipes.feed.getRecipe",
   "defs": {
     "main": {
       "type": "query",
@@ -46,14 +46,14 @@
           "type": "array",
           "items": {
             "type": "ref",
-            "ref": "moe.hayden.cookware.defs#ingredient"
+            "ref": "blue.recipes.feed.defs#ingredient"
           }
         },
         "steps": {
           "type": "array",
           "items": {
             "type": "ref",
-            "ref": "moe.hayden.cookware.defs#step"
+            "ref": "blue.recipes.feed.defs#step"
           }
         }
       }
