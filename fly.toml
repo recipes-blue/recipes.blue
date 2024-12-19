@@ -11,7 +11,7 @@ primary_region = "lhr"
   ingester = "bash -c 'cd apps/ingester && node dist/index.js'"
 
 [env]
-  CORS_ORIGINS = "https://recipes.blue,http://localhost:5173"
+  CORS_ORIGINS = "https://recipes.blue,http://127.0.0.1:5173"
 
 [deploy]
   release_command = "bash -c 'cd libs/database && pnpm db:migrate'"
