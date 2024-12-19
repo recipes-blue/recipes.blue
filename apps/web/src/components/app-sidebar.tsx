@@ -67,7 +67,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <CookingPot className="size-4" />
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-semibold">Cookware</span>
+                  <span className="font-semibold">Recipes</span>
                 </div>
               </a>
             </SidebarMenuButton>
