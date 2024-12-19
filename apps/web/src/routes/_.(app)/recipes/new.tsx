@@ -12,7 +12,6 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RecipeRecord } from "@cookware/lexicons";
 import {
   Form,
   FormControl,
@@ -41,6 +40,7 @@ import { DragHandleDots2Icon } from "@radix-ui/react-icons";
 import { Label } from "@/components/ui/label";
 import { TrashIcon } from "lucide-react";
 import { useNewRecipeMutation } from "@/queries/recipe";
+import { recipeSchema } from "@/forms/recipe";
 
 export const Route = createFileRoute("/_/(app)/recipes/new")({
   beforeLoad: async ({ context }) => {
@@ -53,16 +53,13 @@ export const Route = createFileRoute("/_/(app)/recipes/new")({
   component: RouteComponent,
 });
 
-const schema = RecipeRecord.extend({
-  time: z.coerce.number(),
-});
-
 function RouteComponent() {
-  const form = useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema),
+  const form = useForm<z.infer<typeof recipeSchema>>({
+    resolver: zodResolver(recipeSchema),
     defaultValues: {
       title: "",
       time: 0,
+      image: null,
       description: "",
       ingredients: [{ name: "" }],
       steps: [{ text: "" }],
@@ -71,9 +68,11 @@ function RouteComponent() {
 
   const { mutate, isPending } = useNewRecipeMutation(form);
 
-  const onSubmit = (values: z.infer<typeof schema>) => {
+  const onSubmit = (values: z.infer<typeof recipeSchema>) => {
     mutate({ recipe: values });
   };
+
+  const imageRef = form.register("image");
 
   const ingredients = useFieldArray({
     control: form.control,
@@ -131,6 +130,24 @@ function RouteComponent() {
                         />
                       </FormControl>
                       <FormDescription>Describe your recipe, maybe tell the world how tasty it is? (Optional)</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  name="image"
+                  control={form.control}
+                  render={(_props) => (
+                    <FormItem>
+                      <FormLabel>Image</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="file"
+                          className="resize-none"
+                          {...imageRef}
+                        />
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}

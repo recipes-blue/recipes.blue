@@ -1,11 +1,13 @@
 import { useXrpc } from "@/hooks/use-xrpc";
 import { useAuth } from "@/state/auth";
 import { XRPC, XRPCError } from "@atcute/client";
-import { Recipe, RecipeCollection } from "@cookware/lexicons";
+import { RecipeCollection } from "@cookware/lexicons";
 import { queryOptions, useMutation, useQuery } from "@tanstack/react-query";
 import { notFound } from "@tanstack/react-router";
 import { UseFormReturn } from "react-hook-form";
 import { TID } from '@atproto/common-web';
+import { recipeSchema } from "@/forms/recipe";
+import { z } from "zod";
 
 const RQKEY_ROOT = 'posts';
 export const RQKEY = (cursor: string, did: string, rkey: string) => [RQKEY_ROOT, cursor, did, rkey];
@@ -47,17 +49,29 @@ export const useRecipeQuery = (did: string, rkey: string) => {
   return useQuery(recipeQueryOptions(rpc, did, rkey));
 };
 
-export const useNewRecipeMutation = (form: UseFormReturn<Recipe>) => {
+export const useNewRecipeMutation = (form: UseFormReturn<z.infer<typeof recipeSchema>>) => {
   const { agent } = useAuth();
   const rpc = useXrpc();
   return useMutation({
     mutationKey: ['recipes.new'],
-    mutationFn: async ({ recipe }: { recipe: Recipe }) => {
+    mutationFn: async ({ recipe: { image, ...recipe } }: { recipe: z.infer<typeof recipeSchema> }) => {
+      let recipeImg = null;
+      if (image) {
+        const imageFile = image.item(0) as File;
+        const res = await rpc.call('com.atproto.repo.uploadBlob', {
+          data: imageFile,
+        });
+        recipeImg = res.data.blob
+      }
+
       const rkey = TID.nextStr();
       const res = await rpc.call(`com.atproto.repo.createRecord`, {
         data: {
           repo: agent?.session.info.sub as `did:${string}`,
-          record: recipe,
+          record: {
+            ...recipe,
+            image: recipeImg,
+          },
           collection: RecipeCollection,
           rkey: rkey,
         },

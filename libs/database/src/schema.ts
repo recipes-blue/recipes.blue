@@ -21,6 +21,7 @@ export const recipeTable = sqliteTable("recipes", {
   id: int('id').primaryKey().notNull().unique(),
   rkey: text('rkey').notNull(),
   title: text('title').notNull(),
+  imageRef: text('title'),
   time: int('time').notNull().default(0),
   description: text('description'),
   ingredients: text('ingredients', { mode: 'json' }).$type<Partial<Ingredient>[]>().notNull(),

@@ -33,6 +33,7 @@ export const newIngester = () => {
             description: record.description,
             ingredients: record.ingredients,
             steps: record.steps,
+            imageRef: record.image ? record.image.ref.$link : null,
             authorDid: parseDid(event.did)!,
             createdAt: now,
           })
@@ -44,6 +45,7 @@ export const newIngester = () => {
               description: record.description,
               ingredients: record.ingredients,
               steps: record.steps,
+              imageRef: record.image ? record.image.ref.$link : null,
             },
           })
           .execute();

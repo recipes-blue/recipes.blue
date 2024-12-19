@@ -15,6 +15,13 @@
       "when": 1734630004978,
       "tag": "0001_icy_killmonger",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1734642833768,
+      "tag": "0002_redundant_wither",
+      "breakpoints": true
     }
   ]
 }
