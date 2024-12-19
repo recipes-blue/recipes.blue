@@ -7,6 +7,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { configureOAuth } from '@atcute/oauth-browser-client';
 import './index.css'
 import { AuthProvider, useAuth } from './state/auth';
+import { ThemeProvider } from './components/theme-provider';
 
 const router = createRouter({
   routeTree,
@@ -45,11 +46,13 @@ const InnerApp = () => {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <AuthProvider>
-      <QueryClientProvider client={queryClient}>
-        <InnerApp />
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-    </AuthProvider>
+    <ThemeProvider defaultTheme="dark" storageKey="recipes-theme">
+      <AuthProvider>
+        <QueryClientProvider client={queryClient}>
+          <InnerApp />
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </AuthProvider>
+    </ThemeProvider>
   </StrictMode>,
 )

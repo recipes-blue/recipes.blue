@@ -18,6 +18,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import { NavUserOpts } from "./nav-user-opts"
+import { ModeToggle } from "./mode-toggle"
 
 const data = {
   navMain: [
@@ -61,7 +62,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <SidebarMenu>
-          <SidebarMenuItem>
+          <SidebarMenuItem className="flex items-center justify-between gap-x-2">
             <SidebarMenuButton size="lg" asChild>
               <a href="#">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
@@ -72,6 +73,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </div>
               </a>
             </SidebarMenuButton>
+            <ModeToggle />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>

@@ -4,17 +4,19 @@ import {
   SidebarMenu,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { ModeToggle } from "./mode-toggle"
 
 export function SidebarTitle() {
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        <div className="flex items-center gap-2 p-2">
-          <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-            <CookingPot className="size-4" />
-          </div>
-          <span className="font-semibold text-sm flex-1 text-left leading-tight">Recipes</span>
+        <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+          <CookingPot className="size-4" />
         </div>
+        <div className="flex flex-col gap-0.5 leading-none">
+          <span className="font-semibold">Recipes</span>
+        </div>
+        <ModeToggle />
       </SidebarMenuItem>
     </SidebarMenu>
   )
