@@ -11,7 +11,7 @@ const RQKEY_ROOT = 'posts';
 export const RQKEY = (cursor: string, did: string, rkey: string) => [RQKEY_ROOT, cursor, did, rkey];
 
 export const useRecipesQuery = (cursor: string, did?: string) => {
-  const { rpc } = useXrpc();
+  const rpc = useXrpc();
   return useQuery({
     queryKey: RQKEY(cursor, did ?? '', ''),
     queryFn: async () => {
@@ -43,7 +43,7 @@ export const recipeQueryOptions = (rpc: XRPC, did: string, rkey: string) => {
 };
 
 export const useRecipeQuery = (did: string, rkey: string) => {
-  const { rpc } = useXrpc();
+  const rpc = useXrpc();
   return useQuery(recipeQueryOptions(rpc, did, rkey));
 };
 

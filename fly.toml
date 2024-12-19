@@ -39,5 +39,5 @@ primary_region = "lhr"
       port = 443
 
 [[statics]]
-  guest_path = "/usr/src/app/apps/web/dist/assets"
-  url_prefix = "/assets"
+  guest_path = "/usr/src/app/apps/web/dist"
+  url_prefix = "/"
