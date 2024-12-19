@@ -8,6 +8,13 @@
       "when": 1733683012154,
       "tag": "0000_boring_tenebrous",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1734630004978,
+      "tag": "0001_icy_killmonger",
+      "breakpoints": true
     }
   ]
 }

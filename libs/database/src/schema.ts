@@ -10,8 +10,6 @@ const did = customType<{ data: DID }>({
   },
 });
 
-const nowAsIsoString = sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`;
-
 const dateIsoText = customType<{ data: Date; driverData: string }>({
   dataType() {
     return "text";
@@ -24,6 +22,7 @@ export const recipeTable = sqliteTable("recipes", {
   id: int('id').primaryKey().notNull().unique(),
   rkey: text('rkey').notNull(),
   title: text('title').notNull(),
+  time: int('time').notNull().default(0),
   description: text('description'),
   ingredients: text('ingredients', { mode: 'json' }).$type<Partial<Ingredient>[]>().notNull(),
   steps: text('steps', { mode: 'json' }).$type<Partial<Step>[]>().notNull(),

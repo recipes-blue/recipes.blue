@@ -12,7 +12,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { IngredientObject, RecipeRecord } from "@cookware/lexicons";
+import { RecipeRecord } from "@cookware/lexicons";
 import {
   Form,
   FormControl,
@@ -237,8 +237,7 @@ function RouteComponent() {
                       e.preventDefault();
                       ingredients.append({
                         name: "",
-                        amount: null,
-                        unit: null,
+                        amount: "",
                       });
                     }}
                   >
