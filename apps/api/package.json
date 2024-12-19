@@ -16,6 +16,7 @@
     "@atcute/client": "^2.0.6",
     "@atproto/api": "^0.13.19",
     "@atproto/common": "^0.4.5",
+    "@atproto/crypto": "^0.4.2",
     "@atproto/jwk-jose": "^0.1.2",
     "@atproto/oauth-client-node": "^0.2.3",
     "@cookware/database": "workspace:^",
@@ -29,6 +30,7 @@
     "hono-sessions": "^0.7.0",
     "jose": "^5.9.6",
     "pino": "^9.5.0",
+    "uint8arrays": "^5.1.0",
     "ws": "^8.18.0",
     "zod": "^3.23.8"
   },

@@ -4,13 +4,8 @@ import { rootLogger } from "./logger.js";
 import env from "./config/env.js";
 import { xrpcApp } from "./xrpc/index.js";
 import { cors } from "hono/cors";
-import { authApp } from "./auth/index.js";
 import { ZodError } from "zod";
-import { CookieStore, Session, sessionMiddleware } from "hono-sessions";
-import { RecipesSession } from "./util/api.js";
 import * as Sentry from "@sentry/node"
-import { readFileSync } from "fs";
-import { getFilePathWithoutDefaultDocument } from "hono/utils/filepath";
 import { recipeApp } from "./recipes/index.js";
 
 if (env.SENTRY_DSN) {
@@ -19,36 +14,7 @@ if (env.SENTRY_DSN) {
   });
 }
 
-const app = new Hono<{
-  Variables: {
-    session: Session<RecipesSession>,
-    session_key_rotation: boolean,
-  },
-}>();
-
-const store = new CookieStore({
-  sessionCookieName: 'recipes-session',
-});
-
-app.use(async (c, next) => {
-  if (
-    c.req.path == '/oauth/client-metadata.json'
-    || c.req.path == '/oauth/jwks.json'
-  ) return next();
-
-  const mw = sessionMiddleware({
-    store,
-    encryptionKey: env.SESSION_KEY, // Required for CookieStore, recommended for others
-    expireAfterSeconds: 900, // Expire session after 15 minutes of inactivity
-    cookieOptions: {
-      sameSite: 'strict', // Recommended for basic CSRF protection in modern browsers
-      path: '/', // Required for this library to work properly
-      httpOnly: true, // Recommended to avoid XSS attacks
-      secure: true,
-    },
-  });
-  return mw(c, next);
-});
+const app = new Hono();
 
 app.use(cors({
   origin: (origin, _ctx) => {
@@ -69,7 +35,6 @@ app.use(cors({
 }));
 
 app.route('/xrpc', xrpcApp);
-app.route('/oauth', authApp);
 app.route('/api/recipes', recipeApp);
 
 app.use(async (ctx, next) => {
@@ -90,28 +55,6 @@ app.use(async (ctx, next) => {
       message: 'The server could not process the request.',
     });
   }
-});
-
-// TODO: Replace custom impl with this when issue is addressed:
-//   https://github.com/honojs/hono/issues/3736
-// app.use('/*', serveStatic({ root: env.PUBLIC_DIR, rewriteRequestPath: () => 'index.html' }));
-
-app.use('/*', async (ctx, next) => {
-  if (ctx.finalized) return next();
-
-  let path = getFilePathWithoutDefaultDocument({
-    filename: 'index.html',
-    root: env.PUBLIC_DIR,
-  })
-
-  if (path) {
-    path = `./${path}`;
-  } else {
-    return next();
-  }
-
-  const index = readFileSync(path).toString();
-  return ctx.html(index);
 });
 
 serve({
