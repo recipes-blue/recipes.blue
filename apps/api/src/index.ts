@@ -61,8 +61,17 @@ app.use(async (ctx, next) => {
 });
 
 app.use('/*', async (ctx, next) => {
-  if (ctx.finalized) return next();
+  if (ctx.req.path == '/client-metadata.json') {  
+    let path = getFilePathWithoutDefaultDocument({
+      filename: 'client-metadata.json',
+      root: env.PUBLIC_DIR,
+    });
 
+    const metadata = JSON.parse(readFileSync(`./${path}`).toString());
+    return ctx.json(metadata);
+  }
+
+  if (ctx.finalized) return next();
   let path = getFilePathWithoutDefaultDocument({
     filename: 'index.html',
     root: env.PUBLIC_DIR,
