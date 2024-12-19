@@ -13,7 +13,7 @@ export function SidebarTitle() {
           <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
             <CookingPot className="size-4" />
           </div>
-          <span className="font-semibold text-sm flex-1 text-left leading-tight">Cookware</span>
+          <span className="font-semibold text-sm flex-1 text-left leading-tight">Recipes</span>
         </div>
       </SidebarMenuItem>
     </SidebarMenu>

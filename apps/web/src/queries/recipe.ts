@@ -15,7 +15,7 @@ export const useRecipesQuery = (cursor: string, did?: string) => {
   return useQuery({
     queryKey: RQKEY(cursor, did ?? '', ''),
     queryFn: async () => {
-      const res = await rpc.get('moe.hayden.cookware.getRecipes', {
+      const res = await rpc.get('blue.recipes.feed.getRecipes', {
         params: { cursor, did },
       });
       return res.data;
@@ -28,7 +28,7 @@ export const recipeQueryOptions = (rpc: XRPC, did: string, rkey: string) => {
     queryKey: RQKEY('', did, rkey),
     queryFn: async () => {
       try {
-      const res = await rpc.get('moe.hayden.cookware.getRecipe', {
+      const res = await rpc.get('blue.recipes.feed.getRecipe', {
         params: { did, rkey },
       });
       return res.data;

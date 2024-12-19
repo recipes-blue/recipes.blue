@@ -1,11 +1,11 @@
 import { Hono } from 'hono';
 import { db, recipeTable } from '@cookware/database';
 import { and, desc, eq, sql } from 'drizzle-orm';
-import { DID, getDidDoc, getDidFromHandleOrDid, parseDid } from '@cookware/lexicons';
+import { DID, getDidDoc, getDidFromHandleOrDid } from '@cookware/lexicons';
 
 export const xrpcApp = new Hono();
 
-xrpcApp.get('/moe.hayden.cookware.getRecipes', async ctx => {
+xrpcApp.get('/blue.recipes.feed.getRecipes', async ctx => {
   const { did: didQuery } = ctx.req.query();
 
   let did: DID | null = null;
@@ -50,7 +50,7 @@ xrpcApp.get('/moe.hayden.cookware.getRecipes', async ctx => {
   });
 });
 
-xrpcApp.get('/moe.hayden.cookware.getRecipe', async ctx => {
+xrpcApp.get('/blue.recipes.feed.getRecipe', async ctx => {
   const { did, rkey } = ctx.req.query();
   if (!did) throw new Error('Invalid DID');
   if (!rkey) throw new Error('Invalid rkey');

@@ -10,7 +10,7 @@ export const newIngester = () => {
   const jetstream = new Jetstream({
     ws: WebSocket,
     endpoint: env.JETSTREAM_ENDPOINT,
-    wantedCollections: ['moe.hayden.cookware.*'],
+    wantedCollections: ['blue.recipes.*'],
     cursor: 0,
   });
 
@@ -66,7 +66,7 @@ export const newIngester = () => {
   jetstream.on('open', () => {
     ingestLogger.info({
       endpoint: env.JETSTREAM_ENDPOINT,
-      wantedCollections: ['moe.hayden.cookware.*'],
+      wantedCollections: ['recipes.blue.*'],
     }, 'Ingester connection opened.');
   });
 

@@ -1,4 +1,4 @@
 import { pino } from "pino";
 
-export const rootLogger = pino({ name: 'cookware' });
-export const ingestLogger = pino({ name: 'cookware.ingest' });
+export const rootLogger = pino({ name: 'recipes' });
+export const ingestLogger = pino({ name: 'recipes.ingest' });

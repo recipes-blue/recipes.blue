@@ -4,11 +4,11 @@ import { getClient } from "../auth/client.js";
 import { Agent } from "@atproto/api";
 import { authLogger } from "../logger.js";
 
-export type CookwareSession = { did: string; };
+export type RecipesSession = { did: string; };
 
 export const getSessionAgent = async (ctx: Context) => {
   const client = await getClient(ctx);
-  const session = ctx.get('session') as Session<CookwareSession>;
+  const session = ctx.get('session') as Session<RecipesSession>;
   const did = session.get('did');
   if (!did) return null;
 

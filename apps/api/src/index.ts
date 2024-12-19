@@ -7,7 +7,7 @@ import { cors } from "hono/cors";
 import { authApp } from "./auth/index.js";
 import { ZodError } from "zod";
 import { CookieStore, Session, sessionMiddleware } from "hono-sessions";
-import { CookwareSession } from "./util/api.js";
+import { RecipesSession } from "./util/api.js";
 import * as Sentry from "@sentry/node"
 import { readFileSync } from "fs";
 import { getFilePathWithoutDefaultDocument } from "hono/utils/filepath";
@@ -21,13 +21,13 @@ if (env.SENTRY_DSN) {
 
 const app = new Hono<{
   Variables: {
-    session: Session<CookwareSession>,
+    session: Session<RecipesSession>,
     session_key_rotation: boolean,
   },
 }>();
 
 const store = new CookieStore({
-  sessionCookieName: 'cookware-session',
+  sessionCookieName: 'recipes-session',
 });
 
 app.use(async (c, next) => {
@@ -59,7 +59,7 @@ app.use(cors({
     }
     return env.CORS_ORIGINS.includes(origin)
       ? origin
-      : 'https://cookware.hayden.moe';
+      : 'https://recipes.blue';
   },
   allowHeaders: ['Content-Type', 'Accept'],
   allowMethods: ['POST', 'GET', 'OPTIONS'],

@@ -3,11 +3,11 @@ import { getDidFromHandleOrDid } from "@cookware/lexicons";
 import { getClient } from "./client.js";
 import { z } from "zod";
 import { Session } from "hono-sessions";
-import { CookwareSession, getSessionAgent } from "../util/api.js";
+import { RecipesSession, getSessionAgent } from "../util/api.js";
 
 export const authApp = new Hono<{
   Variables: {
-    session: Session<CookwareSession>,
+    session: Session<RecipesSession>,
     session_key_rotation: boolean,
   },
 }>();
@@ -64,7 +64,7 @@ authApp.get('/callback', async ctx => {
   const params = new URLSearchParams(ctx.req.url.split('?')[1]);
 
   const { session } = await client.callback(params);
-  const currentSession = ctx.get('session') as Session<CookwareSession>;
+  const currentSession = ctx.get('session') as Session<RecipesSession>;
   const did = currentSession.get('did');
   if (did) {
     ctx.status(400);
