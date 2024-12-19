@@ -56,13 +56,16 @@ export const Route = createFileRoute("/_/(app)/recipes/new")({
   component: RouteComponent,
 });
 
-const schema = RecipeRecord;
+const schema = RecipeRecord.extend({
+  time: z.coerce.number(),
+});
 
 function RouteComponent() {
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
       title: "",
+      time: 0,
       description: "",
       ingredients: [{ name: "" }],
       steps: [{ text: "" }],

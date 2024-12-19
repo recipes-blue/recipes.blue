@@ -8,6 +8,8 @@ import { ZodError } from "zod";
 import * as Sentry from "@sentry/node"
 import { recipeApp } from "./recipes/index.js";
 import { XRPCError } from "./util/xrpc.js";
+import { getFilePathWithoutDefaultDocument } from "hono/utils/filepath";
+import { readFileSync } from "fs";
 
 if (env.SENTRY_DSN) {
   Sentry.init({
@@ -56,6 +58,24 @@ app.use(async (ctx, next) => {
       message: 'The server could not process the request.',
     });
   }
+});
+
+app.use('/*', async (ctx, next) => {
+  if (ctx.finalized) return next();
+
+  let path = getFilePathWithoutDefaultDocument({
+    filename: 'index.html',
+    root: env.PUBLIC_DIR,
+  })
+
+  if (path) {
+    path = `./${path}`;
+  } else {
+    return next();
+  }
+
+  const index = readFileSync(path).toString();
+  return ctx.html(index);
 });
 
 serve({
