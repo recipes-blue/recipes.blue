@@ -18,7 +18,16 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    /* Hono */
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./server/*"],
+      "@/*": ["./src/*"]
+    },
+    "jsx": "react-jsx",
+    "types": ["node", "vite/client"]
   },
-  "include": ["vite.config.ts"]
+  "include": ["vite.config.ts", "server", "src"]
 }

@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const recipeSchema = RecipeRecord.extend({
   time: z.coerce.number(),
-  image: z
+  image: typeof window === 'undefined' ? z.any() : z
     .instanceof(FileList)
     .or(z.null()),
 });
