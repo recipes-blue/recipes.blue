@@ -1,15 +1,14 @@
+import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { AuthContextType, AuthProvider } from "@/state/auth";
+import { AuthContextType } from "@/state/auth";
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
-import { ThemeProvider } from "@/components/theme-provider";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "@/lib/react-query";
 import "../index.css";
 import { configureOAuth } from "@atcute/oauth-browser-client";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Meta, Scripts } from "@tanstack/start";
+import { Providers } from '@/providers';
 
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   configureOAuth({
     metadata: {
       client_id: import.meta.env.VITE_OAUTH_CLIENT_ID,
@@ -24,22 +23,66 @@ type RootContext = {
 
 export const Route = createRootRouteWithContext<RootContext>()({
   component: RootComponent,
+  head: () => ({
+    meta: [
+      {
+        title: "Recipes",
+      },
+      {
+        charSet: "UTF-8",
+      },
+      {
+        name: "viewport",
+        content: "width=device-width, initial-scale=1.0",
+      },
+    ],
+    links: import.meta.env.PROD
+      ? [ { rel: 'stylesheet', href: '/static/assets/main.css' } ]
+      : [],
+    scripts: import.meta.env.PROD
+      ? [
+        { type: "module", src: "/static/main.js" },
+      ]
+      : [
+        {
+          type: "module",
+          children: `import RefreshRuntime from "/@react-refresh"
+RefreshRuntime.injectIntoGlobalHook(window)
+window.$RefreshReg$ = () => {}
+window.$RefreshSig$ = () => (type) => type
+window.__vite_plugin_react_preamble_installed__ = true`,
+        },
+        {
+          type: "module",
+          src: "/@vite/client",
+        },
+        {
+          type: "module",
+          src: "/src/main.tsx",
+        },
+      ],
+  }),
 });
 
 function RootComponent() {
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="recipes-theme">
-      <AuthProvider>
-        <QueryClientProvider client={queryClient}>
+    <html>
+      <head>
+        <Meta />
+      </head>
+      <body>
+        <Providers>
           <SidebarProvider>
             <AppSidebar />
             <SidebarInset>
               <Outlet />
             </SidebarInset>
           </SidebarProvider>
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
-      </AuthProvider>
-    </ThemeProvider>
+        </Providers>
+
+        <TanStackRouterDevtools position="bottom-right" />
+        <Scripts />
+      </body>
+    </html>
   );
 }

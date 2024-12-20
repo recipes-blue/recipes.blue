@@ -83,6 +83,7 @@ export default defineConfig(({ mode }) => {
         devServer({
           entry: './server/index.ts',
           adapter: nodeAdapter,
+          injectClientScript: false,
         }),
         build({
           entry: './server/index.ts',

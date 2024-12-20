@@ -1,18 +1,25 @@
 import type { Handler } from "hono";
 import { createRouter } from '../src/router';
-import { createRequestHandler, defaultStreamHandler } from '@tanstack/start/server';
+import { renderToString } from 'react-dom/server';
+import { StartServer } from '@tanstack/start/server';
+//import { createMemoryHistory } from "@tanstack/react-router";
 
 export const tsrEntry: Handler = async (ctx) => {
-  const handler = createRequestHandler({
-    request: ctx.req.raw,
-    createRouter: () => {
-      const router = createRouter();
-      return router;
-    },
-  });
+  const router = createRouter();
 
-  const response = await handler(defaultStreamHandler);
+  //const memoryHistory = createMemoryHistory({
+  //  initialEntries: [ctx.req.path],
+  //});
 
-  ctx.res = response;
-  return;
+  //router.update({
+  //  context: { auth: undefined! },
+  //  history: memoryHistory,
+  //});
+
+  await router.load();
+
+  let html = renderToString(<StartServer router={router} />)
+
+  ctx.status(router.hasNotFoundMatch() ? 404 : 200);
+  return ctx.html(html);
 };
