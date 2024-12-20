@@ -23,10 +23,11 @@
     /* Hono */
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./server/*"]
+      "~/*": ["./server/*"],
+      "@/*": ["./src/*"]
     },
     "jsx": "react-jsx",
     "types": ["node", "vite/client"]
   },
-  "include": ["vite.config.ts", "server"]
+  "include": ["vite.config.ts", "server", "src"]
 }
