@@ -30,6 +30,7 @@ export const newIngester = () => {
             rkey: event.commit.rkey,
             title: record.title,
             time: record.time,
+            serves: record.serves,
             description: record.description,
             ingredients: record.ingredients,
             steps: record.steps,
@@ -42,6 +43,7 @@ export const newIngester = () => {
             set: {
               title: record.title,
               time: record.time,
+              serves: record.serves,
               description: record.description,
               ingredients: record.ingredients,
               steps: record.steps,

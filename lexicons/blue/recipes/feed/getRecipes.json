@@ -49,6 +49,7 @@
         "imageUrl": { "type": "string" },
         "title": { "type": "string" },
         "time": { "type": "integer" },
+        "serves": { "type": "integer" },
         "description": { "type": "string" },
         "ingredients": { "type": "integer" },
         "steps": { "type": "integer" }

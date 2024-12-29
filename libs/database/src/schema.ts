@@ -23,6 +23,7 @@ export const recipeTable = sqliteTable("recipes", {
   title: text('title').notNull(),
   imageRef: text('image_ref'),
   time: int('time').notNull().default(0),
+  serves: int('serves'),
   description: text('description'),
   ingredients: text('ingredients', { mode: 'json' }).$type<Partial<Ingredient>[]>().notNull(),
   steps: text('steps', { mode: 'json' }).$type<Partial<Step>[]>().notNull(),

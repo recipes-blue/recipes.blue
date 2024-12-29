@@ -57,6 +57,7 @@ declare module "@atcute/client/lexicons" {
       title: string;
       description?: string;
       imageUrl?: string;
+      serves?: number;
       time?: number;
     }
   }
@@ -82,6 +83,7 @@ declare module "@atcute/client/lexicons" {
       title: string;
       description?: string;
       imageUrl?: string;
+      serves?: number;
       type?: string;
     }
   }
@@ -106,6 +108,8 @@ declare module "@atcute/client/lexicons" {
       description?: string;
       /** The recipe's cover image. */
       image?: At.Blob;
+      /** The amount of people the recipe will make servings for. */
+      serves?: number;
       /** The amount of time (in minutes) the recipe takes to complete. */
       time?: number;
     }

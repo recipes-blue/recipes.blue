@@ -32,6 +32,10 @@
             "type": "integer",
             "description": "The amount of time (in minutes) the recipe takes to complete."
           },
+          "serves": {
+            "type": "integer",
+            "description": "The amount of people the recipe will make servings for."
+          },
           "ingredients": {
             "type": "array",
             "items": {
