@@ -2,7 +2,7 @@ import { BlueRecipesFeedGetRecipes } from "@atcute/client/lexicons";
 import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Link } from "@tanstack/react-router";
-import { Clock, ListOrdered, Utensils } from "lucide-react";
+import { Clock, ListOrdered, Users, Utensils } from "lucide-react";
 
 type RecipeCardProps = {
   recipe: BlueRecipesFeedGetRecipes.Result;
@@ -52,6 +52,11 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
               <div className="flex items-center">
                 <ListOrdered className="w-4 h-4 mr-1" />
                 <span>{recipe.steps}</span>
+              </div>
+
+              <div className="flex items-center">
+                <Users className="w-4 h-4 mr-1" />
+                <span>{recipe.serves}</span>
               </div>
 
               <div className="flex items-center">

@@ -92,7 +92,7 @@ function RouteComponent() {
               </Badge>
               <Badge variant="secondary" className="flex items-center gap-2">
                 <Users className="size-4" />
-                <span>Serves 2</span>
+                <span>Serves {recipe.serves ?? '1'}</span>
               </Badge>
             </div>
 

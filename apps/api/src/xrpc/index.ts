@@ -50,13 +50,13 @@ xrpcApp.get('/blue.recipes.feed.getRecipes', async ctx => {
     rkey: r.rkey,
     title: r.title,
     time: r.time,
-    serves: r.serves,
+    serves: r.serves ?? 1,
     description: r.description || undefined,
     ingredients: r.ingredientsCount as number,
     steps: r.stepsCount as number,
     imageUrl: r.imageRef
       ? `https://cdn.bsky.app/img/feed_thumbnail/plain/${r.authorDid}/${r.imageRef}@jpeg`
-      : null,
+      : undefined,
   });
 
   for (const result of recipes) {
